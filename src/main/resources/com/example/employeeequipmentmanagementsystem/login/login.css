@@ -1,0 +1,50 @@
+.close
+{
+    -fx-background-color:  transparent;
+    -fx-cursor: hand;
+}
+.close:hover{
+    -fx-background-color: #ff3547;
+}
+.left-form
+{
+    -fx-background-color: linear-gradient(to bottom, rgb(1, 91, 225), rgb(75, 108, 255), rgb(111, 177, 252));;
+    -fx-border-color: #000;
+    -fx-border-width: .4px 0px .4px .4px;
+}
+.right-form
+{
+    -fx-background-color: #eee;
+    -fx-border-color: #000;
+    -fx-border-width: .4px .4px .4px 0px;
+}
+.text-field {
+    -fx-background-color: #ffffff; /* Białe tło */
+    -fx-border-color: #a9a9a9; /* Kolor obramowania */
+    -fx-border-width: 1px; /* Grubość obramowania */
+    -fx-border-radius: 3px; /* Zakrąglenie rogów */
+    -fx-padding: 8px; /* Wewnętrzny odstęp */
+    -fx-font-size: 14px; /* Rozmiar czcionki */
+    -fx-text-fill: #333333; /* Kolor tekstu */
+}
+
+.text-field:focused {
+    -fx-border-color: #4682b4; /* Kolor obramowania po uzyskaniu focusu */
+    -fx-box-shadow: 0 0 5px #4682b4; /* Cień po uzyskaniu focusu */
+}
+.btn {
+    -fx-background-color: linear-gradient(to bottom, rgb(20, 118, 255), rgb(79, 158, 255));
+    -fx-background-radius: 3px; /* Zakrąglenie rogów */
+    -fx-border-color: #000;
+    -fx-border-width: 0.4px;
+    -fx-text-fill: #fff; /* Kolor tekstu */
+    -fx-font-size: 14px; /* Rozmiar czcionki */
+    -fx-padding: 8px 16px; /* Wewnętrzny odstęp */
+}
+
+.btn:hover {
+    -fx-background-color: linear-gradient(to right, rgb(18, 110, 250), rgb(71, 150, 250));
+    -fx-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -fx-cursor: hand;
+
+}

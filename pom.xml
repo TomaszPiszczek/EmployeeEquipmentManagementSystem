@@ -65,7 +65,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.employeeequipmentmanagementsystem/com.example.employeeequipmentmanagementsystem.HelloApplication
+                                com.example.employeeequipmentmanagementsystem/com.example.employeeequipmentmanagementsystem.Main
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
