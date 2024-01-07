@@ -9,12 +9,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@login.css">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="600.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.LoginController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane prefHeight="300.0" prefWidth="600.0" StackPane.alignment="CENTER">
          <children>
-            <AnchorPane layoutY="2.0" prefHeight="400.0" prefWidth="300.0" styleClass="left-form" stylesheets="@login.css">
+            <AnchorPane prefHeight="400.0" prefWidth="300.0" styleClass="left-form" stylesheets="@login.css">
                <children>
                   <FontAwesomeIcon glyphName="USERS" layoutX="86.0" layoutY="182.0" size="10em" />
                   <Label alignment="CENTER" layoutX="5.0" layoutY="199.0" prefHeight="88.0" prefWidth="290.0" text="Employee Management System">
@@ -24,17 +23,18 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="300.0" layoutY="2.0" prefHeight="400.0" prefWidth="300.0" styleClass="right-form" stylesheets="@login.css">
+            <AnchorPane layoutX="300.0" prefHeight="400.0" prefWidth="300.0" styleClass="right-form" stylesheets="@login.css">
                <children>
                   <Label layoutX="27.0" layoutY="69.0" prefHeight="70.0" prefWidth="132.0" text="Zaloguj się">
                      <font>
                         <Font name="System Bold" size="23.0" />
                      </font>
                   </Label>
-                  <TextField layoutX="27.0" layoutY="159.0" prefHeight="33.0" prefWidth="220.0" promptText="Email" styleClass="text-field" />
-                  <PasswordField layoutX="27.0" layoutY="212.0" prefHeight="33.0" prefWidth="220.0" promptText="Hasło" styleClass="text-field" />
-                  <Button layoutX="27.0" layoutY="268.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Zaloguj" styleClass="btn" />
-                  <Button layoutX="247.0" layoutY="2.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="66.0" styleClass="close" stylesheets="@login.css" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
+                  <TextField fx:id="emailField" layoutX="27.0" layoutY="159.0" prefHeight="33.0" prefWidth="220.0" promptText="Email" styleClass="field" />
+                  <Label layoutX="27.0" layoutY="192.0" prefHeight="1.0" prefWidth="200.0" styleClass="line" />
+                  <PasswordField fx:id="password" layoutX="27.0" layoutY="212.0" prefHeight="33.0" prefWidth="220.0" promptText="Hasło" styleClass="input,field" />
+                  <Button fx:id="login" layoutX="27.0" layoutY="268.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" styleClass="btn" stylesheets="@login.css" text="Zaloguj" />
+                  <Button fx:id="close" layoutX="247.0" layoutY="2.0" mnemonicParsing="false" onAction="#close" prefHeight="23.0" prefWidth="66.0" styleClass="close" stylesheets="@login.css" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                      <graphic>
                         <FontAwesomeIcon glyphName="CLOSE" size="1.4em" />
                      </graphic>
