@@ -8,6 +8,7 @@ module com.example.employeeequipmentmanagementsystem {
     requires jjwt.api;
     requires jjwt.jackson;
     requires java.prefs;
+    requires com.google.gson;
 
     opens com.example.employeeequipmentmanagementsystem.controller to javafx.fxml;
     exports com.example.employeeequipmentmanagementsystem;
