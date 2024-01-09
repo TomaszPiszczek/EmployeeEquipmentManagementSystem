@@ -1,7 +1,7 @@
 package com.example.employeeequipmentmanagementsystem.apiConnection;
 
 
-import com.example.employeeequipmentmanagementsystem.model.Employee;
+import com.example.employeeequipmentmanagementsystem.exception.LoginException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.Claims;
@@ -24,7 +24,7 @@ public class EquipmentApiConnection {
 
         HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + userPreferences.get("email", "") + "\",\"password\":\"" + userPreferences.get("password", "") + "\"}");
         String path = "auth/authentication";
-        JsonObject jsonResponse = getApi(path, "GET", bodyPublisher, "", JsonObject.class);
+        JsonObject jsonResponse = callApi(path, "GET", bodyPublisher, "", JsonObject.class);
 
         userPreferences.put("token", jsonResponse.get("token").getAsString());
 
@@ -33,17 +33,12 @@ public class EquipmentApiConnection {
     /**
      * @param path   api path after : :port/api/v1/
      * @param method method type {GET, POST, PATCH,DELETE}
-     * @param body
-     * @param token
-     * @param type
-     * @param <T>
-     * @return Specified type from JSON deserialization.
+     * @return return specified type from JSON deserialization.
      */
 
-    public <T> T getApi(String path, String method, HttpRequest.BodyPublisher body, String token, Type type) {
+    public <T> T callApi(String path, String method, HttpRequest.BodyPublisher body, String token, Type type) {
         try {
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/v1/" + path)).header("Content-Type", "application/json");
-            System.out.println(isTokenValid(token));
 
             if (token != null && !token.isEmpty()) {
                 requestBuilder.header("Authorization", "Bearer " + token);
@@ -61,25 +56,30 @@ public class EquipmentApiConnection {
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+            if(response.statusCode() == 403) throw new LoginException(response.statusCode() + "Wrong email or password");
+
 
             Gson gson = new Gson();
             return gson.fromJson(response.body(), type);
 
-        } catch (Exception ex) {
+        }catch (LoginException ex){
+            System.out.println(ex.getMessage());
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;
     }
 
-    public void login(String email, String password, String userName) {
+    public void login(String email, String password) {
         HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}");
         String path = "auth/authentication";
 
-        JsonObject jsonResponse = getApi(path, "POST", bodyPublisher, "", JsonObject.class);
+        JsonObject jsonResponse = callApi(path, "POST", bodyPublisher, "", JsonObject.class);
+        if(jsonResponse == null) return;
 
         Preferences userPreferences = Preferences.userRoot();
         userPreferences.put("password", password);
-        userPreferences.put("userName", userName);
         userPreferences.put("token", jsonResponse.get("token").getAsString());
     }
 
