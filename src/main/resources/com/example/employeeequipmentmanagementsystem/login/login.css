@@ -30,7 +30,6 @@
 
 .text-field:focused {
     -fx-border-color: #4682b4;
-    -fx-box-shadow: 0 0 5px #4682b4;
 }
 .btn {
     -fx-background-color: linear-gradient(to bottom, rgb(20, 118, 255), rgb(79, 158, 255));
@@ -44,7 +43,6 @@
 
 .btn:hover {
     -fx-background-color: linear-gradient(to right, rgb(18, 110, 250), rgb(71, 150, 250));
-    -fx-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     -fx-cursor: hand;
 
 }

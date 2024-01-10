@@ -1,5 +1,6 @@
 package com.example.employeeequipmentmanagementsystem;
 
+import com.example.employeeequipmentmanagementsystem.controller.StageSettings;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,24 +12,16 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 
 public class Main extends Application {
-    private double x =0;
-    private double y =0;
     @Override
     public void start(Stage stage) throws IOException {
 
 
-        Parent root =  FXMLLoader.load(getClass().getResource("login/login.fxml"));
+        Parent root =  FXMLLoader.load(getClass().getResource("main/dashboard.fxml"));
         Scene scene = new Scene(root);
         stage.setTitle("Login");
-        root.setOnMousePressed((MouseEvent event)->{
-            x= event.getSceneX();
-            y= event.getSceneY();
-        });
-        scene.setOnMouseDragged((MouseEvent event)->{
-            stage.setX(event.getScreenX()-x);
-            stage.setY(event.getScreenY()-y);
-            stage.setOpacity(0.8);
-        });
+
+        StageSettings initDragAndMousePress = new StageSettings();
+        initDragAndMousePress.setStage(stage,root);
 
         root.setOnMouseReleased(mouseEvent -> stage.setOpacity(1));
         stage.initStyle(StageStyle.TRANSPARENT);

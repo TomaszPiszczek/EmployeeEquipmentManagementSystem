@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +20,7 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 public class LoginController implements Initializable {
+
 
     @FXML
     private Button close;
@@ -65,6 +67,12 @@ public class LoginController implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/dashboard.fxml"));
         Stage stage = new Stage();
         Scene scene = new Scene(root);
+
+        stage.initStyle(StageStyle.TRANSPARENT);
+        StageSettings initDragAndMousePress = new StageSettings();
+        initDragAndMousePress.setStage(stage,root);
+
+        root.setOnMouseReleased(mouseEvent -> stage.setOpacity(1));
         stage.setScene(scene);
         stage.show();
     }
