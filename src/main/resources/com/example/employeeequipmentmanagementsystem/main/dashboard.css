@@ -48,6 +48,14 @@
     -fx-background-color: linear-gradient(to bottom, #5267a4, #5b73c7);
     -fx-background-radius: 10px;
 }
+.card:hover{
+    -fx-background-color: linear-gradient(to bottom, #5b70b6, #6780da);
+    -fx-background-radius: 10px;
+    -fx-pref-width: 261;
+    -fx-pref-height: 124;
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,1),11,0.2,2,2);
+    -fx-cursor: hand;
+}
 .shadow-card{
     -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,1),9,0.2,2,2);
 }
