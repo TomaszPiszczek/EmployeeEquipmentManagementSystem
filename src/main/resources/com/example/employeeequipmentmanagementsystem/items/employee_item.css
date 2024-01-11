@@ -1,0 +1,15 @@
+.info-button:hover{
+    -fx-background-color: #33bd53;
+    -fx-cursor: hand;
+}
+.info-button{
+    -fx-background-color:  #28a745;
+    -fx-background-radius: 7px;
+}
+.even-background {
+    -fx-background-color: white;
+}
+
+.odd-background {
+    -fx-background-color: #f0f0f0;
+}
