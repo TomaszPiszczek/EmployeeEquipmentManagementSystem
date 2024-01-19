@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.DashboardController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.main.DashboardController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
          <children>
             <BorderPane prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
@@ -30,12 +30,12 @@
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Button layoutX="1035.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" styleClass="close" stylesheets="@dashboard.css">
+                        <Button fx:id="close" layoutX="1035.0" mnemonicParsing="false" onAction="#close" prefHeight="30.0" prefWidth="65.0" styleClass="close" stylesheets="@dashboard.css">
                            <graphic>
                               <FontAwesomeIcon glyphName="CLOSE" size="1.4em" text="" />
                            </graphic>
                         </Button>
-                        <Button layoutX="970.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" styleClass="minimise" stylesheets="@dashboard.css">
+                        <Button fx:id="minimise" layoutX="970.0" mnemonicParsing="false" onAction="#minimise" prefHeight="30.0" prefWidth="65.0" styleClass="minimise" stylesheets="@dashboard.css">
                            <graphic>
                               <FontAwesomeIcon glyphName="MINUS" size="1.5em" />
                            </graphic>
@@ -50,10 +50,10 @@
                   <AnchorPane maxWidth="201.0" prefHeight="565.0" prefWidth="196.0" styleClass="left-pane" stylesheets="@dashboard.css" BorderPane.alignment="CENTER">
                      <children>
                         <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="62.0" layoutY="120.0" size="8em" />
-                        <Button layoutX="1.0" layoutY="192.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="Pracownicy" />
-                        <Button layoutX="1.0" layoutY="234.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="Narzędzia" textAlignment="RIGHT" />
-                        <Button layoutX="1.0" layoutY="276.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="  Rejestr Pojazdów" />
-                        <Button layoutY="522.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="Wyloguj" />
+                        <Button fx:id="scene_employee" layoutX="1.0" layoutY="192.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="Pracownicy" />
+                        <Button fx:id="scene_tools" layoutX="1.0" layoutY="234.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="Narzędzia" textAlignment="RIGHT" />
+                        <Button fx:id="scene_cars" layoutX="1.0" layoutY="276.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="  Rejestr Pojazdów" />
+                        <Button fx:id="logout" layoutY="522.0" mnemonicParsing="false" onAction="#logout" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="Wyloguj" />
                         <FontAwesomeIcon glyphName="SIGN_OUT" layoutX="7.0" layoutY="555.0" size="2.8em" text="" wrappingWidth="33.19999885559082" />
                         <FontAwesomeIcon glyphName="USERS" layoutX="14.0" layoutY="219.0" size="1.6em" />
                         <FontAwesomeIcon glyphName="CAR" layoutX="12.0" layoutY="304.0" size="1.7em" />
@@ -69,7 +69,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="9.0" layoutY="8.0" prefHeight="555.0" prefWidth="881.0" stylesheets="@dashboard.css" visible="false">
+                        <AnchorPane fx:id="employees_stage" layoutX="9.0" layoutY="8.0" prefHeight="555.0" prefWidth="881.0" stylesheets="@dashboard.css">
                            <styleClass>
                               <String fx:value="white-bg" />
                               <String fx:value="shadow" />
@@ -81,7 +81,7 @@
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <AnchorPane layoutX="14.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
+                                    <AnchorPane fx:id="main_edit_employee" layoutX="14.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
                                        <styleClass>
                                           <String fx:value="card" />
                                           <String fx:value="shadow-card" />
@@ -95,7 +95,7 @@
                                           <FontAwesomeIcon fill="WHITE" glyphName="EDIT" layoutX="14.0" layoutY="86.0" size="5em" />
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane layoutX="614.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
+                                    <AnchorPane fx:id="main_delete_employee" layoutX="614.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
                                        <styleClass>
                                           <String fx:value="card" />
                                           <String fx:value="shadow-card" />
@@ -109,7 +109,7 @@
                                           <FontAwesomeIcon fill="WHITE" glyphName="USER_TIMES" layoutX="19.0" layoutY="80.0" size="5em" />
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane layoutX="323.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
+                                    <AnchorPane fx:id="main_add_employee" layoutX="323.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
                                        <styleClass>
                                           <String fx:value="card" />
                                           <String fx:value="shadow-card" />
@@ -125,7 +125,7 @@
                                     </AnchorPane>
                                  </children>
                               </AnchorPane>
-                              <TextField layoutX="11.0" layoutY="171.0" prefHeight="25.0" prefWidth="252.0" promptText="Search" />
+                              <TextField fx:id="main_search" layoutX="11.0" layoutY="171.0" prefHeight="25.0" prefWidth="252.0" promptText="Search" />
                               <FontAwesomeIcon glyphName="SEARCH" layoutX="237.0" layoutY="189.0" size="1.4em" />
                               <HBox layoutX="11.0" layoutY="201.0" prefHeight="347.0" prefWidth="866.0">
                                  <children>
@@ -165,7 +165,7 @@
                               </HBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="10.0" layoutY="9.0" prefHeight="555.0" prefWidth="881.0" stylesheets="@dashboard.css">
+                        <AnchorPane fx:id="tools_stage" layoutX="10.0" layoutY="9.0" prefHeight="555.0" prefWidth="881.0" stylesheets="@dashboard.css" visible="false">
                            <styleClass>
                               <String fx:value="white-bg" />
                               <String fx:value="shadow" />
@@ -230,6 +230,124 @@
                                           <VBox fx:id="equipmentLayout" prefHeight="339.0" prefWidth="849.0" styleClass="white-background" stylesheets="@dashboard.css">
                                              <children>
                                                 <HBox prefHeight="45.0" prefWidth="888.0" style="-fx-background-color: cdcdcd;">
+                                                   <children>
+                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="160.0" text="#">
+                                                         <font>
+                                                            <Font name="Tahoma Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" prefHeight="48.0" prefWidth="160.0" text="Nazwa">
+                                                         <font>
+                                                            <Font name="Tahoma Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="240.0" text="Opis">
+                                                         <font>
+                                                            <Font name="Tahoma Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="167.0" text="Cena">
+                                                         <font>
+                                                            <Font name="Tahoma Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="employee_detail_stage" layoutX="10.0" layoutY="8.0" prefHeight="555.0" prefWidth="881.0" stylesheets="@dashboard.css" visible="false">
+                           <styleClass>
+                              <String fx:value="white-bg" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <children>
+                              <AnchorPane layoutY="-6.0" prefHeight="101.0" prefWidth="881.0" stylesheets="@dashboard.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane layoutX="14.0" layoutY="17.0" prefHeight="65.0" prefWidth="360.0">
+                                       <styleClass>
+                                          <String fx:value="card" />
+                                          <String fx:value="shadow-card" />
+                                       </styleClass>
+                                       <children>
+                                          <Label layoutX="103.0" layoutY="33.0" prefHeight="27.0" prefWidth="155.0" text="Dodaj badanie" textFill="WHITE">
+                                             <font>
+                                                <Font name="Tahoma" size="17.0" />
+                                             </font>
+                                          </Label>
+                                          <FontAwesomeIcon fill="WHITE" glyphName="EDIT" layoutX="7.0" layoutY="56.0" size="5em" />
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="507.0" layoutY="18.0" prefHeight="65.0" prefWidth="360.0">
+                                       <styleClass>
+                                          <String fx:value="card" />
+                                          <String fx:value="shadow-card" />
+                                       </styleClass>
+                                       <children>
+                                          <Label layoutX="105.0" layoutY="32.0" prefHeight="26.0" prefWidth="150.0" text="Dodaj narzędzie" textFill="WHITE">
+                                             <font>
+                                                <Font name="Tahoma" size="17.0" />
+                                             </font>
+                                          </Label>
+                                          <FontAwesomeIcon fill="WHITE" glyphName="WRENCH" layoutX="14.0" layoutY="54.0" size="4.6em" />
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
+                              <TextField layoutX="8.0" layoutY="98.0" prefHeight="32.0" prefWidth="252.0" promptText="Search" />
+                              <FontAwesomeIcon glyphName="SEARCH" layoutX="229.0" layoutY="120.0" size="1.4em" text="" />
+                              <HBox layoutX="8.0" layoutY="128.0" prefHeight="199.0" prefWidth="866.0">
+                                 <children>
+                                    <ScrollPane prefHeight="347.0" prefWidth="864.0" styleClass="transparent" stylesheets="@dashboard.css">
+                                       <content>
+                                          <VBox fx:id="equipmentLayout1" prefHeight="166.0" prefWidth="849.0" styleClass="white-background" stylesheets="@dashboard.css">
+                                             <children>
+                                                <HBox prefHeight="30.0" prefWidth="849.0" style="-fx-background-color: cdcdcd;">
+                                                   <children>
+                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="160.0" text="#">
+                                                         <font>
+                                                            <Font name="Tahoma Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" prefHeight="48.0" prefWidth="160.0" text="Nazwa">
+                                                         <font>
+                                                            <Font name="Tahoma Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="240.0" text="Opis">
+                                                         <font>
+                                                            <Font name="Tahoma Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="167.0" text="Cena">
+                                                         <font>
+                                                            <Font name="Tahoma Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="8.0" layoutY="342.0" prefHeight="199.0" prefWidth="866.0">
+                                 <children>
+                                    <ScrollPane prefHeight="347.0" prefWidth="864.0" styleClass="transparent" stylesheets="@dashboard.css">
+                                       <content>
+                                          <VBox fx:id="equipmentLayout11" prefHeight="166.0" prefWidth="850.0" styleClass="white-background" stylesheets="@dashboard.css">
+                                             <children>
+                                                <HBox prefHeight="30.0" prefWidth="849.0" style="-fx-background-color: cdcdcd;">
                                                    <children>
                                                       <Label alignment="CENTER" prefHeight="45.0" prefWidth="160.0" text="#">
                                                          <font>
