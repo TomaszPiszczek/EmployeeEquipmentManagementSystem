@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="45.0" prefWidth="887.0" stylesheets="@employee_item.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.EquipmentItemController">
+<HBox prefHeight="45.0" prefWidth="887.0" stylesheets="@employee_item.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.controller.EquipmentItemController">
    <children>
       <Label prefHeight="47.0" prefWidth="160.0">
          <font>
