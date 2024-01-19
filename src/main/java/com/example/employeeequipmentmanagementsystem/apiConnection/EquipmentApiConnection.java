@@ -42,6 +42,9 @@ public class EquipmentApiConnection {
 
             if (token != null && !token.isEmpty()) {
                 requestBuilder.header("Authorization", "Bearer " + token);
+                if(!isTokenValid(token)){
+                    authenticate(Preferences.userRoot());
+                }
             }
 
             switch (method.toUpperCase()) {
@@ -56,8 +59,7 @@ public class EquipmentApiConnection {
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            if(response.statusCode() == 403) throw new LoginException(response.statusCode() + "Wrong email or password");
-
+            if(response.statusCode() == 403) throw new LoginException(response.statusCode() + "Wrong email or password" + response.body());
 
             Gson gson = new Gson();
             return gson.fromJson(response.body(), type);
@@ -80,6 +82,7 @@ public class EquipmentApiConnection {
 
         Preferences userPreferences = Preferences.userRoot();
         userPreferences.put("password", password);
+        userPreferences.put("email", email);
         userPreferences.put("token", jsonResponse.get("token").getAsString());
     }
 
