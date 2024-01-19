@@ -1,6 +1,7 @@
-package com.example.employeeequipmentmanagementsystem.controller;
+package com.example.employeeequipmentmanagementsystem.controller.controller;
 
 import com.example.employeeequipmentmanagementsystem.apiConnection.EquipmentApiConnection;
+import com.example.employeeequipmentmanagementsystem.controller.StageSettings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -69,8 +70,7 @@ public class LoginController implements Initializable {
         Scene scene = new Scene(root);
 
         stage.initStyle(StageStyle.TRANSPARENT);
-        StageSettings initDragAndMousePress = new StageSettings();
-        initDragAndMousePress.setStage(stage,root);
+        StageSettings.setStage(stage,root);
 
         root.setOnMouseReleased(mouseEvent -> stage.setOpacity(1));
         stage.setScene(scene);

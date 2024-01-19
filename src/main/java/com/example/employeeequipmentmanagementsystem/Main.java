@@ -5,7 +5,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -20,8 +19,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         stage.setTitle("Login");
 
-        StageSettings initDragAndMousePress = new StageSettings();
-        initDragAndMousePress.setStage(stage,root);
+        StageSettings.setStage(stage,root);
 
         root.setOnMouseReleased(mouseEvent -> stage.setOpacity(1));
         stage.initStyle(StageStyle.TRANSPARENT);

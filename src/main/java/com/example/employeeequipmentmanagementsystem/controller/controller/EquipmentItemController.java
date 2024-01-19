@@ -1,4 +1,4 @@
-package com.example.employeeequipmentmanagementsystem.controller;
+package com.example.employeeequipmentmanagementsystem.controller.controller;
 
 import com.example.employeeequipmentmanagementsystem.model.Equipment;
 import javafx.fxml.FXML;
