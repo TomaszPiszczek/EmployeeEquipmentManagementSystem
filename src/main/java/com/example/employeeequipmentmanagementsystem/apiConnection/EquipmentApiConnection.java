@@ -19,16 +19,6 @@ import java.util.prefs.Preferences;
 public class EquipmentApiConnection {
 
 
-    public void authenticate(Preferences userPreferences) {
-
-
-        HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + userPreferences.get("email", "") + "\",\"password\":\"" + userPreferences.get("password", "") + "\"}");
-        String path = "auth/authentication";
-        JsonObject jsonResponse = callApi(path, "GET", bodyPublisher, "", JsonObject.class);
-
-        userPreferences.put("token", jsonResponse.get("token").getAsString());
-
-    }
 
     /**
      * @param path   api path after : :port/api/v1/
@@ -36,16 +26,18 @@ public class EquipmentApiConnection {
      * @return return specified type from JSON deserialization.
      */
 
-    public <T> T callApi(String path, String method, HttpRequest.BodyPublisher body, String token, Type type) {
+    public <T> T callApi(String path, String method, HttpRequest.BodyPublisher body, Type type) {
         try {
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/v1/" + path)).header("Content-Type", "application/json");
+            Preferences userPref = Preferences.userRoot();
 
-            if (token != null && !token.isEmpty()) {
-                requestBuilder.header("Authorization", "Bearer " + token);
-                if(!isTokenValid(token)){
+
+                if(!isTokenValid(userPref.get("token",""))){
                     authenticate(Preferences.userRoot());
                 }
-            }
+                requestBuilder.header("Authorization", "Bearer " + userPref.get("token",""));
+
+
 
             switch (method.toUpperCase()) {
                 case "GET" -> requestBuilder.GET();
@@ -77,7 +69,7 @@ public class EquipmentApiConnection {
         HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}");
         String path = "auth/authentication";
 
-        JsonObject jsonResponse = callApi(path, "POST", bodyPublisher, "", JsonObject.class);
+        JsonObject jsonResponse = callApi(path, "POST", bodyPublisher,JsonObject.class);
         if(jsonResponse == null) return;
 
         Preferences userPreferences = Preferences.userRoot();
@@ -92,6 +84,32 @@ public class EquipmentApiConnection {
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
+        }
+    }
+    public void authenticate(Preferences userPreferences) {
+        try {
+            HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + userPreferences.get("email", "") + "\",\"password\":\"" + userPreferences.get("password", "") + "\"}");
+            String path = "auth/authentication";
+
+            HttpRequest.Builder authRequestBuilder = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/v1/" + path))
+                    .header("Content-Type", "application/json").POST(bodyPublisher);
+
+            HttpRequest authRequest = authRequestBuilder.build();
+            HttpClient authClient = HttpClient.newHttpClient();
+            HttpResponse<String> authResponse = authClient.send(authRequest, HttpResponse.BodyHandlers.ofString());
+
+            if (authResponse.statusCode() == 403) {
+                throw new LoginException(authResponse.statusCode() + " Wrong email or password" + authResponse.body());
+            }
+
+            Gson gson = new Gson();
+            JsonObject jsonResponse = gson.fromJson(authResponse.body(), JsonObject.class);
+            userPreferences.put("token", jsonResponse.get("token").getAsString());
+
+        } catch (LoginException ex) {
+            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
