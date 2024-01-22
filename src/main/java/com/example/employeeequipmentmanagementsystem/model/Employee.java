@@ -1,6 +1,5 @@
 package com.example.employeeequipmentmanagementsystem.model;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Employee {

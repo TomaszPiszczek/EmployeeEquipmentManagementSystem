@@ -12,11 +12,10 @@ public class EmployeeService {
     public static List<Employee> getEmployeesDTO(){
         EquipmentApiConnection api = new EquipmentApiConnection();
         api.login("correct@correct.com","password123");
-        Preferences userPreferences = Preferences.userRoot();
 
 
         TypeToken<List<Employee>> typeToken = new TypeToken<>() {};
-         return api.callApi("employee/getEmployees", "GET", null, userPreferences.get("token", ""), typeToken.getType());
+         return api.callApi("employee/getEmployees", "GET", null, typeToken.getType());
 
     }
 }
