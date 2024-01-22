@@ -1,13 +1,18 @@
 package com.example.employeeequipmentmanagementsystem.controller.main;
 
 import com.example.employeeequipmentmanagementsystem.controller.StageSettings;
+import com.example.employeeequipmentmanagementsystem.controller.controller.DataItemController;
 import com.example.employeeequipmentmanagementsystem.controller.controller.EmployeeItemController;
+import com.example.employeeequipmentmanagementsystem.controller.controller.EquipmentItemController;
 import com.example.employeeequipmentmanagementsystem.model.Employee;
+import com.example.employeeequipmentmanagementsystem.model.Equipment;
 import com.example.employeeequipmentmanagementsystem.service.EmployeeService;
+import com.example.employeeequipmentmanagementsystem.service.EquipmentService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,12 +22,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -34,143 +39,122 @@ public class DashboardController implements Initializable {
     private VBox equipmentLayout;
     @FXML
     private AnchorPane main_form;
-
     @FXML
     private Button close;
-
     @FXML
     private AnchorPane employee_detail_stage;
-
     @FXML
     private AnchorPane employees_stage;
-
-
     @FXML
     private VBox equipmentLayout1;
-
     @FXML
     private VBox equipmentLayout11;
-
     @FXML
     private Button logout;
-
     @FXML
     private AnchorPane main_add_employee;
-
     @FXML
     private AnchorPane main_delete_employee;
-
     @FXML
     private AnchorPane main_edit_employee;
-
     @FXML
     private TextField main_search;
-
     @FXML
     private Button minimise;
-
     @FXML
     private Button scene_cars;
-
     @FXML
     private Button scene_employee;
-
     @FXML
     private Button scene_tools;
-
     @FXML
     private AnchorPane tools_stage;
+    @FXML
+    private HBox employeeColumn;
 
 
-
-
-
-        //fixme 1:21
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        initalizeData();
+        initializeEmployeeData();
     }
 
-    private void initalizeData() {
-        employeeLayout.getChildren().clear();
+    private void initializeEmployeeData() {
+        clearChildren(employeeLayout);
         employeeLayout.setSpacing(1);
-        equipmentLayout.setSpacing(1);
+
         List<Employee> employeeList = EmployeeService.getEmployeesDTO();
-        for (int i = 0; i < employeeList.size(); i++) {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/employee_item.fxml"));
-            try {
-                HBox hbox = fxmlLoader.load();
-                EmployeeItemController EIC = fxmlLoader.getController();
-                EIC.setData(employeeList.get(i));
+        printDataInColumns(employeeList, "employee_item.fxml", EmployeeItemController.class, employeeLayout);
+    }
 
-                if (i % 2 == 0) {
-                    hbox.setStyle("-fx-background-color: white"); // Light gray
+    private void initializeEquipmentData() {
+        clearChildren(equipmentLayout);
+        equipmentLayout.setSpacing(1);
 
-                } else {
-                    hbox.setStyle("-fx-background-color: #cdcdcd;"); // Light gray
-                }
+        List<Equipment> equipmentList = EquipmentService.getEquipment();
+        printDataInColumns(equipmentList, "equipment_item.fxml", EquipmentItemController.class, equipmentLayout);
+    }
 
-                employeeLayout.getChildren().add(hbox);
+    private void clearChildren(VBox layout) {
+        if (layout.getChildren().size() > 1) {
+            layout.getChildren().subList(1, layout.getChildren().size()).clear();
+        }
+    }
 
-            } catch (IOException ex) {
-                ex.printStackTrace();
+    private void switchToEmployeesStage() {
+        tools_stage.setVisible(false);
+        employee_detail_stage.setVisible(false);
+        employees_stage.setVisible(true);
+        initializeEmployeeData();
+    }
+
+    private void switchToToolsStage() {
+        employees_stage.setVisible(false);
+        employee_detail_stage.setVisible(false);
+        tools_stage.setVisible(true);
+
+        initializeEquipmentData();
+    }
+
+    private void switchToCarsStage() {
+        // TODO: Implement cars stage logic
+    }
+
+    private void switchToEmployeeDetailStage() {
+        employees_stage.setVisible(false);
+        employee_detail_stage.setVisible(true);
+        initializeEquipmentData();
+        //todo implement data
+    }
+
+    @FXML
+    public void switchForm(ActionEvent event) {
+        if (event.getSource() == scene_employee) {
+            switchToEmployeesStage();
+        } else if (event.getSource() == scene_tools) {
+            switchToToolsStage();
+        } else if (event.getSource() == scene_cars) {
+            switchToCarsStage();
+        } else if (event.getSource() instanceof Node) {
+            Node sourceNode = (Node) event.getSource();
+            if ("employee_more".equals(sourceNode.getId())) {
+                switchToEmployeeDetailStage();
             }
-    }
-    }
-
-    /* List<Employee> employees = new ArrayList<>();
-       for (int i = 0; i < employees.size(); i++) {
-           FXMLLoader fxmlLoader = new FXMLLoader();
-           fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/employee_item.fxml"));
-           try {
-               HBox hbox = fxmlLoader.load();
-               EmployeeItemController EIC = fxmlLoader.getController();
-               EIC.setData(employees.get(i));
-
-               if (i % 2 == 0) {
-                   hbox.setStyle("-fx-background-color: white"); // Light gray
-
-               } else {
-                   hbox.setStyle("-fx-background-color: #cdcdcd;"); // Light gray
-               }
-
-               employeeLayout.getChildren().add(hbox);
-
-           } catch (IOException ex) {
-               ex.printStackTrace();
-           }*/
-    public void switchForm(ActionEvent event){
-        if(event.getSource() == scene_employee){
-            tools_stage.setVisible(false);
-            employees_stage.setVisible(false);
-            employees_stage.setVisible(true);
-            initalizeData();
-        }
-        if(event.getSource() == scene_tools){
-            employees_stage.setVisible(false);
-            employees_stage.setVisible(false);
-            tools_stage.setVisible(true);
-            initalizeData();
-
-        }
-        if(event.getSource() == scene_cars){  //todo cars stage
-            employees_stage.setVisible(false);
-            tools_stage.setVisible(false);
-            employees_stage.setVisible(false);
-            initalizeData();
-
         }
     }
-    public void close(){
+
+    @FXML
+    private void close() {
         System.exit(0);
     }
-    public void minimise(){
+
+    @FXML
+    private void minimise() {
         Stage stage = (Stage) main_form.getScene().getWindow();
         stage.setIconified(true);
     }
-    public void logout() throws BackingStoreException, IOException {
+
+    @FXML
+    private void logout() throws IOException, BackingStoreException {
         logout.getScene().getWindow().hide();
         Preferences.userRoot().clear();
         URL url = getClass().getResource("/com/example/employeeequipmentmanagementsystem/login/login.fxml");
@@ -181,6 +165,73 @@ public class DashboardController implements Initializable {
         StageSettings.setStage(stage, root);
         stage.setScene(scene);
         stage.show();
+
     }
+
+
+
+
+    private void setHBoxStyle(int index, HBox hbox) {
+        String baseStyle;
+
+        if (index % 2 != 0) {
+            baseStyle = "-fx-background-color: #cdcdcd;";
+        } else {
+            baseStyle = "-fx-background-color: white;";
+        }
+
+        hbox.setStyle(baseStyle);
+
+    }
+
+
+        private void addChildBasedOnObjectType(Object item, HBox hbox, VBox layout) {
+            if (item instanceof Employee) {
+                layout.getChildren().add(hbox);
+            } else if (item instanceof Equipment) {
+                layout.getChildren().add(hbox);
+            } else {
+                handleInvalidDataType(item);
+            }
+        }
+
+        private void handleInvalidControllerType(DataItemController specificController) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "Invalid controller type: " + specificController.getClass().getName());
+        }
+
+        private void handleInvalidDataType(Object item) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "Invalid data type: " + item.getClass().getName());
+        }
+
+        public void printDataInColumns(List<? extends Object> list, String fxmlItemFile,
+                                       Class<? extends DataItemController> controllerClass, VBox layout) {
+            for (int i = 0; i < list.size(); i++) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/" + fxmlItemFile));
+                try {
+                    HBox hbox = fxmlLoader.load();
+
+                    DataItemController specificController = fxmlLoader.getController();
+                    if(list.get(i) instanceof Employee){
+                        fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/employee_item.fxml"));
+                        EmployeeItemController employeeItemController = fxmlLoader.getController();
+                        employeeItemController.setDashboardController(this);
+                    }
+
+                    if (controllerClass.isInstance(specificController)) {
+                        specificController.setData(list.get(i));
+                        setHBoxStyle(i, hbox);
+                        addChildBasedOnObjectType(list.get(i), hbox, layout);
+                    } else {
+                        handleInvalidControllerType(specificController);
+                    }
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
 
 }

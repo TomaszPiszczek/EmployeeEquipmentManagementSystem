@@ -11,7 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EquipmentItemController implements Initializable {
+public class EquipmentItemController implements Initializable,DataItemController {
 
     @FXML
     private Label description;
@@ -24,14 +24,16 @@ public class EquipmentItemController implements Initializable {
 
     @FXML
     private Label price;
-    public void setData(Equipment equipment){
-       description.setText(equipment.getDescription());
-       if(equipment.getImageData() != null){
-           Image img = new Image(new ByteArrayInputStream(equipment.getImageData()));
-           image.setImage(img);
-       }
-        name.setText(equipment.getName());
-        price.setText(equipment.getPrice().toString());
+    public void setData(Object data){
+        if (data instanceof Equipment equipment) {
+            description.setText(equipment.getDescription());
+            if (equipment.getImageData() != null) {
+                Image img = new Image(new ByteArrayInputStream(equipment.getImageData()));
+                image.setImage(img);
+            }
+            name.setText(equipment.getName());
+            price.setText(equipment.getPrice().toString());
+        }
     }
 
     @Override

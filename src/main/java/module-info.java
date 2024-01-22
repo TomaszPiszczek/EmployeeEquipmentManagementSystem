@@ -10,6 +10,8 @@ module com.example.employeeequipmentmanagementsystem {
     requires java.prefs;
     requires com.google.gson;
     requires javafx.base;
+    requires java.logging;
+    requires java.xml;
 
     opens com.example.employeeequipmentmanagementsystem.controller to javafx.fxml;
     opens com.example.employeeequipmentmanagementsystem.model to com.google.gson;
