@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="45.0" prefWidth="887.0" stylesheets="@employee_item.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.controller.TrainingItemController">
+   <children>
+      <Label prefHeight="47.0" prefWidth="160.0">
+         <font>
+            <Font name="Tahoma Bold" size="18.0" />
+         </font>
+         <graphic>
+            <ImageView fx:id="image" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" />
+         </graphic>
+      </Label>
+      <Label fx:id="name" alignment="CENTER" prefHeight="41.0" prefWidth="160.0">
+         <font>
+            <Font name="Tahoma Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="description" alignment="CENTER" prefHeight="46.0" prefWidth="240.0">
+         <font>
+            <Font name="Tahoma Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="price" alignment="CENTER" prefHeight="45.0" prefWidth="167.0">
+         <font>
+            <Font name="Tahoma Bold" size="18.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="45.0" prefWidth="160.0" />
+   </children>
+</HBox>
