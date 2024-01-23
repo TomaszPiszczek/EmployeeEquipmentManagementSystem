@@ -28,11 +28,17 @@ public class EquipmentItemController implements Initializable,DataItemController
         if (data instanceof Equipment equipment) {
             description.setText(equipment.getDescription());
             if (equipment.getImageData() != null) {
-                Image img = new Image(new ByteArrayInputStream(equipment.getImageData()));
+                String imageDataString = equipment.getImageData();
+                byte[] imageDataBytes = imageDataString.getBytes();
+
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(imageDataBytes);
+                Image img = new Image(inputStream);
                 image.setImage(img);
             }
             name.setText(equipment.getName());
-            price.setText(equipment.getPrice().toString());
+            if (equipment.getPrice() !=null){
+                price.setText(equipment.getPrice().toString());
+            }
         }
     }
 

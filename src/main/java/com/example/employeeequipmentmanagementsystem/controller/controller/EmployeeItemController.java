@@ -5,17 +5,15 @@ import com.example.employeeequipmentmanagementsystem.model.Employee;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 public class EmployeeItemController implements Initializable,DataItemController {
 
@@ -49,16 +47,12 @@ public class EmployeeItemController implements Initializable,DataItemController 
         column.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             clicked.set(!clicked.get());
             updateStyles();
-            if (clicked.get() && employee != null) {
-                displayEmployeeUUID();
-            }
+
         });
     }
 
-    private void displayEmployeeUUID() {
-        if (employee != null) {
-            System.out.println("Employee UUID: " + employee.getEmployeeId());
-        }
+    private UUID getEmployeeUUID() {
+        return employee.getEmployeeId();
     }
 
     public void setData(Object data) {
@@ -79,13 +73,12 @@ public class EmployeeItemController implements Initializable,DataItemController 
         }
     }
     @FXML
-    private void switchForm(ActionEvent event) throws IOException {
+    private void switchForm(ActionEvent event) {
 
         if (dashboardController != null) {
-            dashboardController.switchForm(event);
+            dashboardController.switchForms(event,getEmployeeUUID());
         }
 
-        displayEmployeeUUID();
     }
 
 

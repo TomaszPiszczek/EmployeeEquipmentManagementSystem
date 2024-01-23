@@ -4,10 +4,13 @@ import com.example.employeeequipmentmanagementsystem.controller.StageSettings;
 import com.example.employeeequipmentmanagementsystem.controller.controller.DataItemController;
 import com.example.employeeequipmentmanagementsystem.controller.controller.EmployeeItemController;
 import com.example.employeeequipmentmanagementsystem.controller.controller.EquipmentItemController;
+import com.example.employeeequipmentmanagementsystem.controller.controller.TrainingItemController;
 import com.example.employeeequipmentmanagementsystem.model.Employee;
 import com.example.employeeequipmentmanagementsystem.model.Equipment;
+import com.example.employeeequipmentmanagementsystem.model.Training;
 import com.example.employeeequipmentmanagementsystem.service.EmployeeService;
 import com.example.employeeequipmentmanagementsystem.service.EquipmentService;
+import com.example.employeeequipmentmanagementsystem.service.TrainingService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+import java.util.UUID;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -38,6 +41,9 @@ public class DashboardController implements Initializable {
     @FXML
     private VBox equipmentLayout;
     @FXML
+    private VBox trainingLayoutDetails;
+    @FXML
+    private VBox equipmentLayoutDetails;
     private AnchorPane main_form;
     @FXML
     private Button close;
@@ -93,6 +99,21 @@ public class DashboardController implements Initializable {
         List<Equipment> equipmentList = EquipmentService.getEquipment();
         printDataInColumns(equipmentList, "equipment_item.fxml", EquipmentItemController.class, equipmentLayout);
     }
+    private void initializeEquipmentDetails(UUID employeeUUID){
+        clearChildren(equipmentLayoutDetails);
+        equipmentLayoutDetails.setSpacing(1);
+
+        List<Equipment> equipmentList = EquipmentService.getEquipmentForEmployee(employeeUUID);
+        printDataInColumns(equipmentList, "equipment_item.fxml", EquipmentItemController.class, equipmentLayoutDetails);
+
+    }
+    private void initializeTrainingDetails(UUID employeeUUID) {
+        clearChildren(trainingLayoutDetails);
+        trainingLayoutDetails.setSpacing(1);
+
+        List<Training> trainingList = TrainingService.getTrainingForEmployee(employeeUUID);
+        printDataInColumns(trainingList, "training_item.fxml", TrainingItemController.class, trainingLayoutDetails);
+    }
 
     private void clearChildren(VBox layout) {
         if (layout.getChildren().size() > 1) {
@@ -127,7 +148,10 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    public void switchForm(ActionEvent event) {
+    private void switchForm(ActionEvent event) {
+       switchForms(event,null);
+    }
+    public void switchForms(ActionEvent event,UUID uuid){
         if (event.getSource() == scene_employee) {
             switchToEmployeesStage();
         } else if (event.getSource() == scene_tools) {
@@ -138,9 +162,13 @@ public class DashboardController implements Initializable {
             Node sourceNode = (Node) event.getSource();
             if ("employee_more".equals(sourceNode.getId())) {
                 switchToEmployeeDetailStage();
+                initializeTrainingDetails(uuid);
+                initializeEquipmentDetails(uuid);
             }
         }
     }
+
+
 
     @FXML
     private void close() {
@@ -190,7 +218,10 @@ public class DashboardController implements Initializable {
                 layout.getChildren().add(hbox);
             } else if (item instanceof Equipment) {
                 layout.getChildren().add(hbox);
-            } else {
+            } else if (item instanceof Training) {
+                layout.getChildren().add(hbox);
+            }
+            else {
                 handleInvalidDataType(item);
             }
         }
@@ -219,7 +250,6 @@ public class DashboardController implements Initializable {
                         EmployeeItemController employeeItemController = fxmlLoader.getController();
                         employeeItemController.setDashboardController(this);
                     }
-
                     if (controllerClass.isInstance(specificController)) {
                         specificController.setData(list.get(i));
                         setHBoxStyle(i, hbox);
