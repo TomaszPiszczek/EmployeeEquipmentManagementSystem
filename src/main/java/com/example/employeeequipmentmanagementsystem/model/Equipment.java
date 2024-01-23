@@ -8,7 +8,7 @@ public class Equipment {
     private String name;
     private BigDecimal price;
     private String description;
-    private byte[] imageData;
+    private String imageData;
 
     public UUID getEquipmentId() {
         return equipmentId;
@@ -26,7 +26,7 @@ public class Equipment {
         return description;
     }
 
-    public byte[] getImageData() {
+    public String getImageData() {
         return imageData;
     }
 
@@ -35,7 +35,7 @@ public class Equipment {
         private String name;
         private BigDecimal price;
         private String description;
-        private byte[] imageData;
+        private String imageData;
 
         public Builder() {
             this.equipmentId = UUID.randomUUID();
@@ -61,7 +61,7 @@ public class Equipment {
             return this;
         }
 
-        public Builder imageData(byte[] imageData) {
+        public Builder imageData(String imageData) {
             this.imageData = imageData;
             return this;
         }
