@@ -17,6 +17,10 @@ module com.example.employeeequipmentmanagementsystem {
     opens com.example.employeeequipmentmanagementsystem.model to com.google.gson;
     exports com.example.employeeequipmentmanagementsystem;
     exports com.example.employeeequipmentmanagementsystem.apiConnection;
+    exports com.example.employeeequipmentmanagementsystem.controller.item.employeeDetails;
     opens com.example.employeeequipmentmanagementsystem.controller.main to javafx.fxml;
-    opens com.example.employeeequipmentmanagementsystem.controller.controller to javafx.fxml;
+    opens com.example.employeeequipmentmanagementsystem.controller.login to javafx.fxml;
+    opens com.example.employeeequipmentmanagementsystem.controller.item to javafx.fxml;
+    opens com.example.employeeequipmentmanagementsystem.controller.item.employeeDetails to javafx.fxml;
+
 }

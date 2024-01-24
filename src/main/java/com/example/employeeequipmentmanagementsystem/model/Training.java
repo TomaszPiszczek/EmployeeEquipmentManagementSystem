@@ -6,6 +6,7 @@ public class Training {
     private UUID trainingId;
     private String name;
     private String description;
+    private String expireDate;
 
     public UUID getTrainingId() {
         return trainingId;
@@ -19,4 +20,7 @@ public class Training {
         return description;
     }
 
+    public String getExpireDate() {
+        return expireDate;
+    }
 }

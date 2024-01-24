@@ -1,4 +1,4 @@
-package com.example.employeeequipmentmanagementsystem.controller.controller;
+package com.example.employeeequipmentmanagementsystem.controller.login;
 
 import com.example.employeeequipmentmanagementsystem.apiConnection.EquipmentApiConnection;
 import com.example.employeeequipmentmanagementsystem.controller.StageSettings;

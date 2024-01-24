@@ -1,6 +1,8 @@
 package com.example.employeeequipmentmanagementsystem.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.UUID;
 
 public class Equipment {
@@ -9,6 +11,7 @@ public class Equipment {
     private BigDecimal price;
     private String description;
     private String imageData;
+    private String assignDate;
 
     public UUID getEquipmentId() {
         return equipmentId;
@@ -30,12 +33,17 @@ public class Equipment {
         return imageData;
     }
 
+    public String getAssignDate() {
+        return assignDate;
+    }
+
     public static class Builder {
         private UUID equipmentId;
         private String name;
         private BigDecimal price;
         private String description;
         private String imageData;
+        private String assignDate;
 
         public Builder() {
             this.equipmentId = UUID.randomUUID();
@@ -55,7 +63,10 @@ public class Equipment {
             this.price = price;
             return this;
         }
-
+        public Builder assignDate(String assignDate){
+            this.assignDate =assignDate;
+            return this;
+        }
         public Builder description(String description) {
             this.description = description;
             return this;
@@ -73,6 +84,7 @@ public class Equipment {
             equipment.price = this.price;
             equipment.description = this.description;
             equipment.imageData = this.imageData;
+            equipment.assignDate = this.assignDate;
             return equipment;
         }
     }

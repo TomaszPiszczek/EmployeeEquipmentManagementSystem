@@ -1,4 +1,4 @@
-package com.example.employeeequipmentmanagementsystem.controller.controller;
+package com.example.employeeequipmentmanagementsystem.controller.item;
 
 import com.example.employeeequipmentmanagementsystem.model.Equipment;
 import javafx.fxml.FXML;
@@ -11,7 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EquipmentItemController implements Initializable,DataItemController {
+public class EquipmentItemController implements Initializable, DataItemController {
 
     @FXML
     private Label description;

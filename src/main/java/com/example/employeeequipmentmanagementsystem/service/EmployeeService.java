@@ -5,6 +5,7 @@ import com.example.employeeequipmentmanagementsystem.model.Employee;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.prefs.Preferences;
 
 public class EmployeeService {
@@ -16,6 +17,13 @@ public class EmployeeService {
 
         TypeToken<List<Employee>> typeToken = new TypeToken<>() {};
          return api.callApi("employee/getEmployees", "GET", null, typeToken.getType());
+
+    }
+    public static Employee getEmployee(UUID employeeUUID){
+        EquipmentApiConnection api = new EquipmentApiConnection();
+
+        TypeToken<Employee> typeToken = new TypeToken<>() {};
+        return api.callApi("employee/getEmployee?employeeUUID=" +employeeUUID , "GET", null, typeToken.getType());
 
     }
 }

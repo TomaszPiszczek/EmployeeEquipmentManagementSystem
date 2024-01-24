@@ -1,4 +1,4 @@
-package com.example.employeeequipmentmanagementsystem.controller.controller;
+package com.example.employeeequipmentmanagementsystem.controller.item;
 
 import com.example.employeeequipmentmanagementsystem.controller.main.DashboardController;
 import com.example.employeeequipmentmanagementsystem.model.Employee;
@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-public class EmployeeItemController implements Initializable,DataItemController {
+public class EmployeeItemController implements Initializable, DataItemController {
 
     private DashboardController dashboardController;
 
@@ -77,6 +77,7 @@ public class EmployeeItemController implements Initializable,DataItemController 
 
         if (dashboardController != null) {
             dashboardController.switchForms(event,getEmployeeUUID());
+            System.out.println(getEmployeeUUID());
         }
 
     }

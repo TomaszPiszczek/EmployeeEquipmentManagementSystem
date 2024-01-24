@@ -24,5 +24,6 @@ public class EquipmentService {
         return api.callApi("equipment/getEmployeeEquipment?employeeUUID=" + employeeUUID, "GET", null, typeToken.getType());
 
     }
+    //public static void removeEquipmentFromEmployee(UUID employeeUUID,)
 
 }

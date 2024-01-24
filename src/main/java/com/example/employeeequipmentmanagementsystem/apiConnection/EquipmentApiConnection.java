@@ -8,6 +8,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -52,6 +53,7 @@ public class EquipmentApiConnection {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if(response.statusCode() == 403) throw new LoginException(response.statusCode() + "Wrong email or password" + response.body());
+            if(response.statusCode() == 404) throw new FileNotFoundException(response.body());
 
             Gson gson = new Gson();
             return gson.fromJson(response.body(), type);
