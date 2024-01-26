@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class Equipment {
-    private UUID equipmentId;
+    private UUID uuid;
     private String name;
     private BigDecimal price;
     private String description;
@@ -14,7 +14,7 @@ public class Equipment {
     private String assignDate;
 
     public UUID getEquipmentId() {
-        return equipmentId;
+        return uuid;
     }
 
     public String getName() {
@@ -79,7 +79,7 @@ public class Equipment {
 
         public Equipment build() {
             Equipment equipment = new Equipment();
-            equipment.equipmentId = this.equipmentId;
+            equipment.uuid = this.equipmentId;
             equipment.name = this.name;
             equipment.price = this.price;
             equipment.description = this.description;
@@ -88,5 +88,7 @@ public class Equipment {
             return equipment;
         }
     }
+    //todo ZROBIC LISTE KTORA PO KLIKNIECIU DODAJE UUID do listy po ponownym kliknieciu usuwa , zmienia kolor elementu i p-o kliknieciu usun usuwa
+    //
 
 }

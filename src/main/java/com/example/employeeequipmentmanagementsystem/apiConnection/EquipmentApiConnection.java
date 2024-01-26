@@ -27,7 +27,7 @@ public class EquipmentApiConnection {
      * @return return specified type from JSON deserialization.
      */
 
-    public <T> T callApi(String path, String method, HttpRequest.BodyPublisher body, Type type) {
+    public static  <T> T callApi(String path, String method, HttpRequest.BodyPublisher body, Type type) {
         try {
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/v1/" + path)).header("Content-Type", "application/json");
             Preferences userPref = Preferences.userRoot();
@@ -36,7 +36,9 @@ public class EquipmentApiConnection {
                 if(!isTokenValid(userPref.get("token",""))){
                     authenticate(Preferences.userRoot());
                 }
-                requestBuilder.header("Authorization", "Bearer " + userPref.get("token",""));
+                if(!userPref.get("token","").equals("")){
+                    requestBuilder.header("Authorization", "Bearer " + userPref.get("token",""));
+                }
 
 
 
@@ -52,22 +54,23 @@ public class EquipmentApiConnection {
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+            if(response.body() ==null) return null;
             if(response.statusCode() == 403) throw new LoginException(response.statusCode() + "Wrong email or password" + response.body());
             if(response.statusCode() == 404) throw new FileNotFoundException(response.body());
-
+            if( type == String.class) return (T) response.body();
+            if(type== null) return null;
             Gson gson = new Gson();
             return gson.fromJson(response.body(), type);
 
-        }catch (LoginException ex){
-            System.out.println(ex.getMessage());
         }
-        catch (Exception ex) {
+        catch (Exception ex){
             ex.printStackTrace();
         }
+
         return null;
     }
 
-    public void login(String email, String password) {
+    public static void login(String email, String password) {
         HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}");
         String path = "auth/authentication";
 
@@ -80,7 +83,7 @@ public class EquipmentApiConnection {
         userPreferences.put("token", jsonResponse.get("token").getAsString());
     }
 
-    public boolean isTokenValid(String jwtToken) {
+    public static boolean isTokenValid(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey("46cf5776e9795db0e5606570207c667d282704912fd91352020c553b766a4d8c").build().parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
@@ -88,7 +91,7 @@ public class EquipmentApiConnection {
             return false;
         }
     }
-    public void authenticate(Preferences userPreferences) {
+    public static void authenticate(Preferences userPreferences) {
         try {
             HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + userPreferences.get("email", "") + "\",\"password\":\"" + userPreferences.get("password", "") + "\"}");
             String path = "auth/authentication";

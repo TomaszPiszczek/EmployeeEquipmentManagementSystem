@@ -3,17 +3,17 @@ package com.example.employeeequipmentmanagementsystem.model;
 import java.util.UUID;
 
 public class Training {
-    private UUID trainingId;
-    private String name;
+    private UUID uuid;
+    private String trainingName;
     private String description;
     private String expireDate;
 
     public UUID getTrainingId() {
-        return trainingId;
+        return uuid;
     }
 
     public String getName() {
-        return name;
+        return trainingName;
     }
 
     public String getDescription() {
