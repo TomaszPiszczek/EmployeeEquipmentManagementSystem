@@ -2,6 +2,8 @@ package com.example.employeeequipmentmanagementsystem.controller.login;
 
 import com.example.employeeequipmentmanagementsystem.apiConnection.EquipmentApiConnection;
 import com.example.employeeequipmentmanagementsystem.controller.StageSettings;
+import com.example.employeeequipmentmanagementsystem.controller.main.DashboardController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +25,8 @@ import java.util.prefs.Preferences;
 public class LoginController implements Initializable {
 
 
+
+
     @FXML
     private Button close;
 
@@ -37,7 +41,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private PasswordField password;
-
+    private DashboardController dashboardController;
     @FXML
     private void close() {
         System.exit(0);
@@ -45,9 +49,15 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Preferences userPref = Preferences.userRoot();
+        if(EquipmentApiConnection.isTokenValid(userPref.get("token",""))){
+            //changeScene();
+            Platform.runLater(this::changeScene);
+
+        }
     }
 
-    public void loginAction() throws IOException {
+    public void loginAction() {
         EquipmentApiConnection equipmentApiConnection = new EquipmentApiConnection();
         String email = emailField.getText();
         String enteredPassword = password.getText();
@@ -63,14 +73,27 @@ public class LoginController implements Initializable {
             alert.showAndWait();
             return;
         }
-
+        changeScene();
+    }
+    private void changeScene(){
         login.getScene().getWindow().hide();
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/dashboard.fxml"));
+        dashboardController = DashboardController.getInstance();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/dashboard.fxml"));
+        loader.setController(dashboardController);
+        System.out.println("LOGIN CONTROLLER  " + dashboardController.hashCode());
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         Stage stage = new Stage();
         Scene scene = new Scene(root);
 
         stage.initStyle(StageStyle.TRANSPARENT);
-        StageSettings.setStage(stage,root);
+        StageSettings.setStage(stage, root);
 
         root.setOnMouseReleased(mouseEvent -> stage.setOpacity(1));
         stage.setScene(scene);

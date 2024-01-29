@@ -8,7 +8,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 
-import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -33,18 +32,23 @@ public class EquipmentApiConnection {
             Preferences userPref = Preferences.userRoot();
 
 
-                if(!isTokenValid(userPref.get("token",""))){
-                    authenticate(Preferences.userRoot());
-                }
-                if(!userPref.get("token","").equals("")){
-                    requestBuilder.header("Authorization", "Bearer " + userPref.get("token",""));
-                }
+            if(!isTokenValid(userPref.get("token",""))){
+                authenticate(Preferences.userRoot());
+            }
+            if(!userPref.get("token","").equals("")){
+                requestBuilder.header("Authorization", "Bearer " + userPref.get("token",""));
+            }
 
 
 
             switch (method.toUpperCase()) {
                 case "GET" -> requestBuilder.GET();
-                case "POST" -> requestBuilder.POST(body);
+                case "POST" ->{
+                    if(body == null){
+                       body = HttpRequest.BodyPublishers.noBody();
+                    }
+                    requestBuilder.POST(body);
+                }
                 case "DELETE" -> requestBuilder.DELETE();
                 case "PATCH" -> requestBuilder.method("PATCH", body);
                 default -> throw new IllegalArgumentException("Wrong method " + method);
@@ -55,8 +59,8 @@ public class EquipmentApiConnection {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if(response.body() ==null) return null;
-            if(response.statusCode() == 403) throw new LoginException(response.statusCode() + "Wrong email or password" + response.body());
-            if(response.statusCode() == 404) throw new FileNotFoundException(response.body());
+            if(response.statusCode() == 403) throw new LoginException(response.statusCode() + "Forbidden " + response.body());
+            if(response.statusCode() == 404) throw new RuntimeException(response.statusCode() + response.body());
             if( type == String.class) return (T) response.body();
             if(type== null) return null;
             Gson gson = new Gson();
@@ -64,6 +68,7 @@ public class EquipmentApiConnection {
 
         }
         catch (Exception ex){
+
             ex.printStackTrace();
         }
 

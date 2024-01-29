@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.main.DashboardController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -69,7 +69,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="employees_stage" layoutX="9.0" layoutY="8.0" prefHeight="555.0" prefWidth="881.0" stylesheets="@dashboard.css">
+                        <AnchorPane fx:id="employees_stage" layoutX="9.0" layoutY="8.0" prefHeight="555.0" prefWidth="881.0" stylesheets="@dashboard.css" visible="false">
                            <styleClass>
                               <String fx:value="white-bg" />
                               <String fx:value="shadow" />
@@ -81,7 +81,7 @@
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <AnchorPane fx:id="main_edit_employee" layoutX="14.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
+                                    <AnchorPane fx:id="main_edit_employee" layoutX="14.0" layoutY="23.0" onMouseClicked="#editEmployee" prefHeight="123.0" prefWidth="260.0">
                                        <styleClass>
                                           <String fx:value="card" />
                                           <String fx:value="shadow-card" />
@@ -95,7 +95,7 @@
                                           <FontAwesomeIcon fill="WHITE" glyphName="EDIT" layoutX="14.0" layoutY="86.0" size="5em" />
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane fx:id="main_delete_employee" layoutX="614.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
+                                    <AnchorPane fx:id="main_delete_employee" layoutX="614.0" layoutY="23.0" onMouseClicked="#removeEmployee" prefHeight="123.0" prefWidth="260.0">
                                        <styleClass>
                                           <String fx:value="card" />
                                           <String fx:value="shadow-card" />
@@ -109,7 +109,7 @@
                                           <FontAwesomeIcon fill="WHITE" glyphName="USER_TIMES" layoutX="19.0" layoutY="80.0" size="5em" />
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane fx:id="main_add_employee" layoutX="323.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
+                                    <AnchorPane fx:id="main_add_employee" layoutX="323.0" layoutY="23.0" onMouseClicked="#addEmployee" prefHeight="123.0" prefWidth="260.0">
                                        <styleClass>
                                           <String fx:value="card" />
                                           <String fx:value="shadow-card" />
@@ -133,7 +133,7 @@
                                        <content>
                                           <VBox fx:id="employeeLayout" prefHeight="339.0" prefWidth="849.0" styleClass="white-background" stylesheets="@dashboard.css">
                                              <children>
-                                                <HBox prefHeight="45.0" prefWidth="888.0" style="-fx-background-color: cdcdcd;">
+                                                <HBox fx:id="employeeColumn" prefHeight="45.0" prefWidth="888.0" style="-fx-background-color: cdcdcd;">
                                                    <children>
                                                       <Label alignment="CENTER" prefHeight="45.0" prefWidth="160.0" text="Imie">
                                                          <font>
@@ -177,7 +177,7 @@
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <AnchorPane layoutX="14.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
+                                    <AnchorPane fx:id="assignTool" layoutX="14.0" layoutY="23.0" onMouseClicked="#assignTool" prefHeight="123.0" prefWidth="260.0">
                                        <styleClass>
                                           <String fx:value="card" />
                                           <String fx:value="shadow-card" />
@@ -191,7 +191,7 @@
                                           <FontAwesomeIcon fill="WHITE" glyphName="EDIT" layoutX="14.0" layoutY="86.0" size="5em" />
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane layoutX="607.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
+                                    <AnchorPane fx:id="removeTool" layoutX="607.0" layoutY="23.0" onMouseClicked="#removeTool" prefHeight="123.0" prefWidth="260.0">
                                        <styleClass>
                                           <String fx:value="card" />
                                           <String fx:value="shadow-card" />
@@ -205,7 +205,7 @@
                                           <FontAwesomeIcon fill="WHITE" glyphName="MAGIC" layoutX="28.0" layoutY="82.0" size="4.5em" />
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane layoutX="311.0" layoutY="23.0" prefHeight="123.0" prefWidth="260.0">
+                                    <AnchorPane layoutX="311.0" layoutY="23.0" onMouseClicked="#addTool" prefHeight="123.0" prefWidth="260.0">
                                        <styleClass>
                                           <String fx:value="card" />
                                           <String fx:value="shadow-card" />
@@ -261,7 +261,7 @@
                               </HBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="employee_detail_stage" layoutX="10.0" layoutY="8.0" prefHeight="555.0" prefWidth="881.0" stylesheets="@dashboard.css" visible="false">
+                        <AnchorPane fx:id="employee_detail_stage" layoutX="10.0" layoutY="8.0" prefHeight="555.0" prefWidth="881.0" stylesheets="@dashboard.css">
                            <styleClass>
                               <String fx:value="white-bg" />
                               <String fx:value="shadow" />
@@ -273,9 +273,9 @@
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <AnchorPane layoutX="14.0" layoutY="17.0" prefHeight="65.0" prefWidth="360.0">
+                                    <AnchorPane layoutX="14.0" layoutY="17.0" onMouseClicked="#AddTraining" prefHeight="65.0" prefWidth="360.0">
                                        <styleClass>
-                                          <String fx:value="card" />
+                                          <String fx:value="card-details" />
                                           <String fx:value="shadow-card" />
                                        </styleClass>
                                        <children>
@@ -287,9 +287,9 @@
                                           <FontAwesomeIcon fill="WHITE" glyphName="EDIT" layoutX="7.0" layoutY="56.0" size="5em" />
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane layoutX="507.0" layoutY="18.0" prefHeight="65.0" prefWidth="360.0">
+                                    <AnchorPane layoutX="507.0" layoutY="18.0" onMouseClicked="#AddTool" prefHeight="65.0" prefWidth="360.0">
                                        <styleClass>
-                                          <String fx:value="card" />
+                                          <String fx:value="card-details" />
                                           <String fx:value="shadow-card" />
                                        </styleClass>
                                        <children>
@@ -303,32 +303,32 @@
                                     </AnchorPane>
                                  </children>
                               </AnchorPane>
-                              <TextField layoutX="8.0" layoutY="98.0" prefHeight="32.0" prefWidth="252.0" promptText="Search" />
-                              <FontAwesomeIcon glyphName="SEARCH" layoutX="229.0" layoutY="120.0" size="1.4em" text="" />
+                              <TextField layoutX="581.0" layoutY="98.0" prefHeight="32.0" prefWidth="252.0" promptText="Search" />
+                              <FontAwesomeIcon glyphName="SEARCH" layoutX="805.0" layoutY="119.0" size="1.4em" text="" />
                               <HBox layoutX="8.0" layoutY="128.0" prefHeight="199.0" prefWidth="866.0">
                                  <children>
                                     <ScrollPane prefHeight="347.0" prefWidth="864.0" styleClass="transparent" stylesheets="@dashboard.css">
                                        <content>
-                                          <VBox fx:id="equipmentLayout1" prefHeight="166.0" prefWidth="849.0" styleClass="white-background" stylesheets="@dashboard.css">
+                                          <VBox fx:id="equipmentLayoutDetails" prefHeight="166.0" prefWidth="849.0" styleClass="white-background" stylesheets="@dashboard.css">
                                              <children>
                                                 <HBox prefHeight="30.0" prefWidth="849.0" style="-fx-background-color: cdcdcd;">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="160.0" text="#">
+                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="50.0" text="#">
                                                          <font>
                                                             <Font name="Tahoma Bold" size="18.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label alignment="CENTER" prefHeight="48.0" prefWidth="160.0" text="Nazwa">
+                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="200.0" text="Nazwa">
                                                          <font>
                                                             <Font name="Tahoma Bold" size="18.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="240.0" text="Opis">
+                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="300.0" text="Opis">
                                                          <font>
                                                             <Font name="Tahoma Bold" size="18.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="167.0" text="Cena">
+                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="200.0" text="Data przypisania">
                                                          <font>
                                                             <Font name="Tahoma Bold" size="18.0" />
                                                          </font>
@@ -345,26 +345,26 @@
                                  <children>
                                     <ScrollPane prefHeight="347.0" prefWidth="864.0" styleClass="transparent" stylesheets="@dashboard.css">
                                        <content>
-                                          <VBox fx:id="equipmentLayout11" prefHeight="166.0" prefWidth="850.0" styleClass="white-background" stylesheets="@dashboard.css">
+                                          <VBox fx:id="trainingLayoutDetails" prefHeight="166.0" prefWidth="850.0" styleClass="white-background" stylesheets="@dashboard.css">
                                              <children>
                                                 <HBox prefHeight="30.0" prefWidth="849.0" style="-fx-background-color: cdcdcd;">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="160.0" text="#">
+                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="50.0" text="#">
                                                          <font>
                                                             <Font name="Tahoma Bold" size="18.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label alignment="CENTER" prefHeight="48.0" prefWidth="160.0" text="Nazwa">
+                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="200.0" text="Nazwa">
                                                          <font>
                                                             <Font name="Tahoma Bold" size="18.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="240.0" text="Opis">
+                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="300.0" text="Opis">
                                                          <font>
                                                             <Font name="Tahoma Bold" size="18.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label alignment="CENTER" prefHeight="45.0" prefWidth="167.0" text="Cena">
+                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="199.0" text="Data">
                                                          <font>
                                                             <Font name="Tahoma Bold" size="18.0" />
                                                          </font>
@@ -377,6 +377,16 @@
                                     </ScrollPane>
                                  </children>
                               </HBox>
+                              <Label fx:id="name" alignment="CENTER" layoutX="14.0" layoutY="99.0" prefHeight="31.0" prefWidth="201.0" text="IMIE" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Tahoma Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="surname" alignment="CENTER" layoutX="289.0" layoutY="99.0" prefHeight="31.0" prefWidth="201.0" text="NAZWISKO" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Tahoma Bold" size="14.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                      </children>

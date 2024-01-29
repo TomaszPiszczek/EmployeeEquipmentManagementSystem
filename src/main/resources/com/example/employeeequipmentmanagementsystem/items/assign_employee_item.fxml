@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="column" prefHeight="45.0" prefWidth="500.0" stylesheets="@employee_item.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.main.tools.AssignEmployeeItemController">
+   <children>
+      <Label fx:id="name" alignment="CENTER" prefHeight="45.0" prefWidth="250.0" text="Imie">
+         <font>
+            <Font name="Tahoma Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="surname" alignment="CENTER" prefHeight="45.0" prefWidth="250.0" text="Nazwisko">
+         <font>
+            <Font name="Tahoma Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</HBox>

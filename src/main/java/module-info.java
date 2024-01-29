@@ -13,14 +13,19 @@ module com.example.employeeequipmentmanagementsystem {
     requires java.logging;
     requires java.xml;
 
-    opens com.example.employeeequipmentmanagementsystem.controller to javafx.fxml;
-    opens com.example.employeeequipmentmanagementsystem.model to com.google.gson;
+
     exports com.example.employeeequipmentmanagementsystem;
     exports com.example.employeeequipmentmanagementsystem.apiConnection;
-    exports com.example.employeeequipmentmanagementsystem.controller.item.employeeDetails;
+    exports com.example.employeeequipmentmanagementsystem.controller.main.tools;
+    exports com.example.employeeequipmentmanagementsystem.controller.main.employee to javafx.fxml;
+    exports com.example.employeeequipmentmanagementsystem.controller.item;
+
+    opens com.example.employeeequipmentmanagementsystem.controller to javafx.fxml;
+    opens com.example.employeeequipmentmanagementsystem.model to com.google.gson;
+    opens com.example.employeeequipmentmanagementsystem.controller.main.employee to javafx.fxml;
     opens com.example.employeeequipmentmanagementsystem.controller.main to javafx.fxml;
     opens com.example.employeeequipmentmanagementsystem.controller.login to javafx.fxml;
     opens com.example.employeeequipmentmanagementsystem.controller.item to javafx.fxml;
-    opens com.example.employeeequipmentmanagementsystem.controller.item.employeeDetails to javafx.fxml;
+    opens com.example.employeeequipmentmanagementsystem.controller.main.tools to javafx.fxml;
 
 }

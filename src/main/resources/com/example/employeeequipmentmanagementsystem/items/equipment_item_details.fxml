@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="45.0" prefWidth="887.0" stylesheets="@employee_item.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.item.employeeDetails.EquipmentItemDetailsController">
+<HBox fx:id="column" prefHeight="45.0" prefWidth="887.0" stylesheets="@employee_item.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.item.EquipmentItemDetailsController">
    <children>
       <Label fx:id="number" prefHeight="45.0" prefWidth="50.0">
          <font>

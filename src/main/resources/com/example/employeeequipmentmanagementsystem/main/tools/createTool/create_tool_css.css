@@ -1,0 +1,37 @@
+/* Stylizacja całego formularza */
+VBox {
+    -fx-background-color: #f4f4f4;
+    -fx-padding: 20;
+    -fx-spacing: 10;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+}
+
+/* Stylizacja etykiet */
+Label {
+    -fx-font-weight: bold;
+}
+
+/* Stylizacja pól tekstowych */
+TextField {
+    -fx-pref-width: 200;
+    -fx-padding: 5;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+}
+
+/* Stylizacja przycisków */
+Button {
+    -fx-pref-width: 80;
+    -fx-padding: 8 15;
+    -fx-font-size: 14;
+    -fx-background-color: #4CAF50; /* Zielony kolor tła */
+    -fx-text-fill: white; /* Biały kolor tekstu */
+    -fx-border-radius: 3;
+}
+
+Button:hover {
+    -fx-background-color: #45a049; /* Ciemniejszy odcień zielonego po najechaniu myszką */
+}

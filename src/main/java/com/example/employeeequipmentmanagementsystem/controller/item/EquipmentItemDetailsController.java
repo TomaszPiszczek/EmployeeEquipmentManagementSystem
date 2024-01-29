@@ -1,4 +1,4 @@
-package com.example.employeeequipmentmanagementsystem.controller.item.employeeDetails;
+package com.example.employeeequipmentmanagementsystem.controller.item;
 
 import com.example.employeeequipmentmanagementsystem.controller.item.DataItemController;
 import com.example.employeeequipmentmanagementsystem.model.Equipment;

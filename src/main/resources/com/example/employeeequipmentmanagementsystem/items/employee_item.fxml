@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="45.0" prefWidth="887.0" stylesheets="@employee_item.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.controller.EmployeeItemController">
+<HBox fx:id="column" prefHeight="45.0" prefWidth="887.0" stylesheets="@employee_item.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.item.EmployeeItemController">
    <children>
       <Label fx:id="name" alignment="CENTER" prefHeight="47.0" prefWidth="160.0" text="Imie">
          <font>
             <Font name="Tahoma Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="surname" alignment="CENTER" prefHeight="41.0" prefWidth="160.0" text="Nazwisko">
+      <Label fx:id="surname" alignment="CENTER" prefHeight="61.0" prefWidth="162.0" text="Nazwisko">
          <font>
             <Font name="Tahoma Bold" size="18.0" />
          </font>
@@ -30,7 +30,7 @@
       </Label>
       <HBox prefHeight="45.0" prefWidth="160.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="189.0" styleClass="info-button" stylesheets="@employee_item.css" text="WIĘCEJ" textFill="WHITE">
+            <Button fx:id="employee_more" mnemonicParsing="false" onAction="#switchForm" prefHeight="45.0" prefWidth="189.0" styleClass="info-button" stylesheets="@employee_item.css" text="WIĘCEJ" textFill="WHITE">
                <font>
                   <Font name="Tahoma Bold" size="12.0" />
                </font>

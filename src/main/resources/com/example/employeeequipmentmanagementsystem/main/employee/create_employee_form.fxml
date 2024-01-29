@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.main.employee.AddEmployeeController">
+
+    <children>
+        <VBox alignment="CENTER" layoutY="13.0" prefHeight="387.0" prefWidth="600.0" spacing="10.0" stylesheets="@add_employee.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label alignment="TOP_CENTER" prefHeight="71.0" prefWidth="243.0" stylesheets="@add_employee.css" text="Dodaj Pracownika">
+                    <font>
+                        <Font name="Tahoma Bold" size="24.0" />
+                    </font></Label>
+                <HBox spacing="10.0" stylesheets="@add_employee.css">
+                    <children>
+                        <Label prefHeight="18.0" prefWidth="80.0" stylesheets="@add_employee.css" text="Imię:">
+                            <font>
+                                <Font name="Tahoma" size="14.0" />
+                            </font></Label>
+                        <TextField fx:id="name" layoutX="40.0" layoutY="40.0" stylesheets="@add_employee.css" />
+                    </children>
+                </HBox>
+                <HBox prefHeight="29.0" prefWidth="538.0" spacing="10.0" stylesheets="@add_employee.css">
+                    <children>
+                        <Label prefHeight="18.0" prefWidth="80.0" stylesheets="@add_employee.css" text="Nazwisko:">
+                            <font>
+                                <Font name="Tahoma Bold" size="14.0" />
+                            </font></Label>
+                        <TextField fx:id="surname" prefHeight="29.0" prefWidth="194.0" stylesheets="@add_employee.css" />
+                    </children>
+                </HBox>
+                <HBox spacing="10.0" stylesheets="@add_employee.css" />
+                <HBox spacing="10.0" stylesheets="@add_employee.css">
+                    <children>
+                        <Button onAction="#close" stylesheets="@add_employee.css" text="Anuluj" />
+                        <Button onAction="#addEmployee" stylesheets="@add_employee.css" text="Dodaj" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

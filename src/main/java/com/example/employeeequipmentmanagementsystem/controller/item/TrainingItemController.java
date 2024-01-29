@@ -1,11 +1,13 @@
 package com.example.employeeequipmentmanagementsystem.controller.item;
 
 import com.example.employeeequipmentmanagementsystem.model.Training;
+import com.example.employeeequipmentmanagementsystem.service.TrainingService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,12 +23,16 @@ public class TrainingItemController implements Initializable, DataItemController
     private Label name;
 
     @FXML
-    private Label price;
+    private Label date;
+    @FXML
+    private HBox column;
+    private Training training;
     public void setData(Object data){
         if (data instanceof Training training) {
+            this.training = (Training) data;
             description.setText(training.getDescription());
             name.setText(training.getName());
-            price.setText(formatAssignDate(training.getExpireDate()));
+            date.setText(formatAssignDate(training.getExpireDate()));
         }
     }
     private String formatAssignDate(String assignDate) {
@@ -39,9 +45,12 @@ public class TrainingItemController implements Initializable, DataItemController
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
     }
+
     @FXML
     void delete(ActionEvent event) {
+        TrainingService.removeTrainingFromEmployee(training.getTrainingId());
 
     }
 }

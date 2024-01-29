@@ -1,10 +1,15 @@
 package com.example.employeeequipmentmanagementsystem.controller.main;
 
 import com.example.employeeequipmentmanagementsystem.controller.StageSettings;
-import com.example.employeeequipmentmanagementsystem.controller.controller.DataItemController;
-import com.example.employeeequipmentmanagementsystem.controller.controller.EmployeeItemController;
-import com.example.employeeequipmentmanagementsystem.controller.controller.EquipmentItemController;
-import com.example.employeeequipmentmanagementsystem.controller.controller.TrainingItemController;
+import com.example.employeeequipmentmanagementsystem.controller.item.DataItemController;
+import com.example.employeeequipmentmanagementsystem.controller.item.EmployeeItemController;
+import com.example.employeeequipmentmanagementsystem.controller.item.EquipmentItemController;
+import com.example.employeeequipmentmanagementsystem.controller.item.TrainingItemController;
+import com.example.employeeequipmentmanagementsystem.controller.item.EquipmentItemDetailsController;
+import com.example.employeeequipmentmanagementsystem.controller.main.employee.AddEmployeeController;
+import com.example.employeeequipmentmanagementsystem.controller.main.employee.AssignTrainingController;
+import com.example.employeeequipmentmanagementsystem.controller.main.tools.AssignEmployeeItemController;
+import com.example.employeeequipmentmanagementsystem.controller.main.tools.CreateToolFormController;
 import com.example.employeeequipmentmanagementsystem.model.Employee;
 import com.example.employeeequipmentmanagementsystem.model.Equipment;
 import com.example.employeeequipmentmanagementsystem.model.Training;
@@ -19,22 +24,41 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.util.UUID;
+
+import java.util.*;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public class DashboardController implements Initializable {
+
+    private static DashboardController instance;
+
+    private DashboardController() {
+    }
+
+    public static DashboardController getInstance() {
+        if (instance == null) {
+            instance = new DashboardController();
+        }
+        return instance;
+    }
+
+    @FXML
+    private Label name;
+    @FXML
+    private Label surname;
 
     @FXML
     private VBox employeeLayout;
@@ -103,9 +127,12 @@ public class DashboardController implements Initializable {
         clearChildren(equipmentLayoutDetails);
         equipmentLayoutDetails.setSpacing(1);
 
-        List<Equipment> equipmentList = EquipmentService.getEquipmentForEmployee(employeeUUID);
-        printDataInColumns(equipmentList, "equipment_item.fxml", EquipmentItemController.class, equipmentLayoutDetails);
+        Employee employee = EmployeeService.getEmployee(employeeUUID);
+        name.setText(employee.getName());
+        surname.setText(employee.getSurname());
 
+        List<Equipment> equipmentList = EquipmentService.getEquipmentForEmployee(employeeUUID);
+        printDataInColumns(equipmentList, "equipment_item_details.fxml", EquipmentItemDetailsController.class, equipmentLayoutDetails);
     }
     private void initializeTrainingDetails(UUID employeeUUID) {
         clearChildren(trainingLayoutDetails);
@@ -114,6 +141,7 @@ public class DashboardController implements Initializable {
         List<Training> trainingList = TrainingService.getTrainingForEmployee(employeeUUID);
         printDataInColumns(trainingList, "training_item.fxml", TrainingItemController.class, trainingLayoutDetails);
     }
+
 
     private void clearChildren(VBox layout) {
         if (layout.getChildren().size() > 1) {
@@ -143,8 +171,6 @@ public class DashboardController implements Initializable {
     private void switchToEmployeeDetailStage() {
         employees_stage.setVisible(false);
         employee_detail_stage.setVisible(true);
-        initializeEquipmentData();
-        //todo implement data
     }
 
     @FXML
@@ -200,68 +226,242 @@ public class DashboardController implements Initializable {
 
 
     private void setHBoxStyle(int index, HBox hbox) {
-        String baseStyle;
+        hbox.setStyle("-fx-border-color: black; -fx-border-width: 0 0 1 0;");
+    }
 
-        if (index % 2 != 0) {
-            baseStyle = "-fx-background-color: #cdcdcd;";
-        } else {
-            baseStyle = "-fx-background-color: white;";
+
+
+
+    private void addChildBasedOnObjectType(Object item, HBox hbox, VBox layout) {
+        if (item instanceof Employee) {
+            layout.getChildren().add(hbox);
+        } else if (item instanceof Equipment) {
+            layout.getChildren().add(hbox);
+        } else if (item instanceof Training) {
+            layout.getChildren().add(hbox);
+        }
+        else {
+            handleInvalidDataType(item);
+        }
+    }
+
+    private void handleInvalidControllerType(DataItemController specificController) {
+        Logger logger = Logger.getLogger(getClass().getName());
+        logger.log(Level.SEVERE, "Invalid controller type: " + specificController.getClass().getName());
+    }
+
+    private void handleInvalidDataType(Object item) {
+        Logger logger = Logger.getLogger(getClass().getName());
+        logger.log(Level.SEVERE, "Invalid data type: " + item.getClass().getName());
+    }
+
+    public void printDataInColumns(List<? extends Object> list, String fxmlItemFile,
+                                   Class<? extends DataItemController> controllerClass, VBox layout) {
+        for (int i = 0; i < list.size(); i++) {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/" + fxmlItemFile));
+            try {
+                HBox hbox = fxmlLoader.load();
+
+                DataItemController specificController = fxmlLoader.getController();
+
+                if(list.get(i) instanceof Employee){
+
+                    if(fxmlItemFile.contains("assign")){
+                        fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/assign_employee_item.fxml"));
+
+                        AssignEmployeeItemController assignEmployeeItemController = fxmlLoader.getController();
+                       // assignEmployeeItemController.setDashboardController(this);
+                    }else {
+                        fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/employee_item.fxml"));
+                        EmployeeItemController employeeItemController = fxmlLoader.getController();
+                    }
+
+                }
+                if(list.get(i) instanceof Equipment){
+                    fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/equipment_item.fxml"));
+                    //EquipmentItemController equipmentItemController = fxmlLoader.getController();
+                }
+                if (controllerClass.isInstance(specificController)) {
+                    specificController.setData(list.get(i));
+                    setHBoxStyle(i, hbox);
+                    addChildBasedOnObjectType(list.get(i), hbox, layout);
+                } else {
+                    handleInvalidControllerType(specificController);
+                }
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    //
+    // TOOLS CONTROLLER
+    //
+    @FXML
+    void addTool(MouseEvent event) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/tools/createTool/create_tool_form.fxml"));
+                Parent root = fxmlLoader.load();
+
+                Stage stage = new Stage();
+                stage.setTitle("Dodaj Narzędzie");
+                stage.initModality(Modality.APPLICATION_MODAL); // Ustawia okno jako modalne (zamyka poprzednie okno, dopóki nie zostanie zamknięte)
+                stage.setScene(new Scene(root));
+
+                CreateToolFormController createToolFormController = fxmlLoader.getController();
+                createToolFormController.setStage((Stage) root.getScene().getWindow());
+
+                stage.showAndWait();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        switchToToolsStage();
+
+    }
+    ///
+    ///assign TOOL
+    ///
+    private Set<UUID> employeeUUIDList = new HashSet<>();
+
+    public void assignToolsToEmployees(){
+        EquipmentService.assignEquipmentsToEmployees(employeeUUIDList, equipmentUUIDList,"2024-01-26T14:13:33");
+
+        employeeUUIDList = new HashSet<>();
+        equipmentUUIDList = new HashSet<>();
+
+    }
+
+    public void addToEmployeeUUIDList(UUID employeeUUID) {
+        employeeUUIDList.add(employeeUUID);
+    }
+
+    public void removeFromEmployeeUUIDList(UUID employeeUUID) {
+        employeeUUIDList.remove(employeeUUID);
+    }
+    @FXML
+    void assignTool(MouseEvent event) {
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/tools/assignTool/assign_tool.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Dodaj Narzędzie");
+            stage.initModality(Modality.APPLICATION_MODAL); // Ustawia okno jako modalne (zamyka poprzednie okno, dopóki nie zostanie zamknięte)
+            stage.setScene(new Scene(root));
+
+
+            stage.showAndWait();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    ///
+    ///REMOVE TOOL
+    ///
+
+    private Set<UUID> equipmentUUIDList = new HashSet<>();
+    @FXML
+    void removeTool(MouseEvent event) {
+        System.out.println(equipmentUUIDList.size());
+        System.out.println(employeeUUIDList.size());
+        System.out.println("REMOVE" +this.hashCode());
+        for (UUID uuid: equipmentUUIDList
+             ) {
+            EquipmentService.removeEquipment(uuid);
         }
 
-        hbox.setStyle(baseStyle);
+        equipmentUUIDList = new HashSet<>();
+        switchToToolsStage();
+    }
+
+    //
+    // Employee CONTROLLER
+    //
+    @FXML
+    void removeEmployee(MouseEvent event) {
+        System.out.println(employeeUUIDList.size());
+        System.out.println(this.hashCode() + "DAS");
+        for (UUID uuid:employeeUUIDList
+             ) {
+           EmployeeService.removeEmployee(uuid);
+        }
+        switchToEmployeesStage();
+    }
+    @FXML
+    void editEmployee(MouseEvent event) {
+
+    }
+    @FXML
+    void addEmployee(MouseEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/create_employee_form.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Dodaj Pracownika");
+            stage.initModality(Modality.APPLICATION_MODAL); // Ustawia okno jako modalne (zamyka poprzednie okno, dopóki nie zostanie zamknięte)
+            stage.setScene(new Scene(root));
+
+            AddEmployeeController addEmployeeController = fxmlLoader.getController();
+            addEmployeeController.setStage((Stage) root.getScene().getWindow());
+
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        switchToEmployeesStage();
+    }
+
+    ///
+    ///EmployeeDetails Controller
+    ///
+
+    @FXML
+    void AddTraining(MouseEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/assign_training.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Dodaj badanie");
+            stage.initModality(Modality.APPLICATION_MODAL); // Ustawia okno jako modalne (zamyka poprzednie okno, dopóki nie zostanie zamknięte)
+            stage.setScene(new Scene(root));
+
+            AssignTrainingController assignTrainingController = fxmlLoader.getController();
+            assignTrainingController.setStage((Stage) root.getScene().getWindow());
+
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    void AddTool(MouseEvent event) {
 
     }
 
 
-        private void addChildBasedOnObjectType(Object item, HBox hbox, VBox layout) {
-            if (item instanceof Employee) {
-                layout.getChildren().add(hbox);
-            } else if (item instanceof Equipment) {
-                layout.getChildren().add(hbox);
-            } else if (item instanceof Training) {
-                layout.getChildren().add(hbox);
-            }
-            else {
-                handleInvalidDataType(item);
-            }
-        }
 
-        private void handleInvalidControllerType(DataItemController specificController) {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.SEVERE, "Invalid controller type: " + specificController.getClass().getName());
-        }
+    public void addToEquipmentUUIDList(UUID equipmentUUID) {
+        equipmentUUIDList.add(equipmentUUID);
+    }
 
-        private void handleInvalidDataType(Object item) {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.SEVERE, "Invalid data type: " + item.getClass().getName());
-        }
+    public void removeFromEquipmentUUIDList(UUID equipmentUUID) {
+        equipmentUUIDList.remove(equipmentUUID);
+    }
 
-        public void printDataInColumns(List<? extends Object> list, String fxmlItemFile,
-                                       Class<? extends DataItemController> controllerClass, VBox layout) {
-            for (int i = 0; i < list.size(); i++) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/" + fxmlItemFile));
-                try {
-                    HBox hbox = fxmlLoader.load();
 
-                    DataItemController specificController = fxmlLoader.getController();
-                    if(list.get(i) instanceof Employee){
-                        fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/employee_item.fxml"));
-                        EmployeeItemController employeeItemController = fxmlLoader.getController();
-                        employeeItemController.setDashboardController(this);
-                    }
-                    if (controllerClass.isInstance(specificController)) {
-                        specificController.setData(list.get(i));
-                        setHBoxStyle(i, hbox);
-                        addChildBasedOnObjectType(list.get(i), hbox, layout);
-                    } else {
-                        handleInvalidControllerType(specificController);
-                    }
 
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
+
+
 
 }
