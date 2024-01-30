@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="column" prefHeight="45.0" prefWidth="887.0" stylesheets="@employee_item.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.item.TrainingItemController">
+<HBox fx:id="column" prefHeight="52.0" prefWidth="668.0" stylesheets="@employee_item.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.main.employee.TrainingItemControllerNoDate">
    <children>
-      <Label prefHeight="47.0" prefWidth="160.0">
+      <Label fx:id="name" prefHeight="60.0" prefWidth="300.0" text="FASFASF">
          <font>
             <Font name="Tahoma Bold" size="18.0" />
          </font>
@@ -17,12 +17,7 @@
             <ImageView fx:id="image" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" />
          </graphic>
       </Label>
-      <Label fx:id="name" alignment="CENTER" prefHeight="41.0" prefWidth="160.0">
-         <font>
-            <Font name="Tahoma Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="description" alignment="CENTER" prefHeight="46.0" prefWidth="240.0">
+      <Label fx:id="description" alignment="CENTER" prefHeight="52.0" prefWidth="253.0" text="fSAFS">
          <font>
             <Font name="Tahoma Bold" size="18.0" />
          </font>
@@ -32,16 +27,13 @@
             <Font name="Tahoma Bold" size="18.0" />
          </font>
       </Label>
-      <HBox prefHeight="45.0" prefWidth="160.0">
-         <children>
-            <Button mnemonicParsing="false" onAction="#delete" prefHeight="51.0" prefWidth="160.0" style="-fx-background-color: red;" text="Button">
-               <font>
-                  <Font name="Tahoma Bold" size="18.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIcon glyphName="CLOSE" size="2em" />
-               </graphic>
-            </Button>
-         </children></HBox>
+      <Button alignment="CENTER" mnemonicParsing="false" onAction="#delete" prefHeight="51.0" prefWidth="123.0" style="-fx-background-color: red;" text="USUŃ">
+         <font>
+            <Font name="Tahoma Bold" size="18.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIcon glyphName="CLOSE" size="2em" />
+         </graphic>
+      </Button>
    </children>
 </HBox>

@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.main.employee.AssignTrainingController">
+<AnchorPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" >
     <children>
-        <Button layoutX="144.0" layoutY="350.0" mnemonicParsing="false" onMouseClicked="#createTraining" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #28a745; -fx-cursor: hand;" text="UTWORZ NOWE BADANIE">
+        <Button layoutX="11.0" layoutY="350.0" mnemonicParsing="false" onMouseClicked="#createTraining" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #28a745; -fx-cursor: hand;" text="UTWORZ NOWE BADANIE">
             <font>
                 <Font name="Tahoma Bold" size="14.0" />
             </font>
@@ -20,9 +20,9 @@
             <content>
                 <VBox fx:id="trainingLayout" prefHeight="257.0" prefWidth="667.0" styleClass="white-background" stylesheets="@../../dashboard.css">
                     <children>
-                        <HBox fx:id="employeeColumn1" prefHeight="45.0" prefWidth="633.0" style="-fx-background-color: cdcdcd;">
+                        <HBox fx:id="employeeColumn1" prefHeight="45.0" prefWidth="613.0" style="-fx-background-color: cdcdcd;">
                             <children>
-                                <Label alignment="CENTER" prefHeight="45.0" prefWidth="334.0" text="NAZWA">
+                                <Label alignment="CENTER" prefHeight="45.0" prefWidth="300.0" text="NAZWA">
                                     <font>
                                         <Font name="Tahoma Bold" size="18.0" />
                                     </font>
@@ -43,7 +43,7 @@
                 <Font name="Tahoma Bold" size="18.0" />
             </font>
         </Label>
-      <Button layoutX="351.0" layoutY="350.0" mnemonicParsing="false" onMouseClicked="#assignTraining" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #28a745; -fx-cursor: hand;" text="DODAJ">
+      <Button layoutX="239.0" layoutY="350.0" mnemonicParsing="false" onMouseClicked="#assignTraining" prefHeight="40.0" prefWidth="207.0" style="-fx-background-color: #28a745; -fx-cursor: hand;" text="DODAJ">
          <font>
             <Font name="Tahoma Bold" size="14.0" />
          </font>

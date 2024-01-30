@@ -30,12 +30,17 @@ public class TrainingService {
        return EquipmentApiConnection.callApi("training/createTraining?name="+name+"&description="+description,"POST", HttpRequest.BodyPublishers.noBody(),String.class).toString();
     }
     //fixme remove training date
-    public static void assignTrainingToEmployee(UUID employeeUUID, UUID trainignUUID, LocalDateTime assignDate){
+    public static void assignTrainingToEmployee(UUID employeeUUID, UUID trainignUUID, String assignDate){
         EquipmentApiConnection.callApi("employee/signEmployeeToTraining?employeeUUID="+employeeUUID+"&trainingUUID="+trainignUUID+"&trainingDate=2023-12-21T12:34:56&expireDate="+assignDate,"POST",HttpRequest.BodyPublishers.noBody(),null);
     }
 
     public static List<Training> getTrainings() {
         TypeToken<List<Training>> typeToken = new TypeToken<>() {};
         return EquipmentApiConnection.callApi("training/getTrainings","GET",null,typeToken.getType());
+    }
+
+    public static void removeTraining(UUID trainingId) {
+        EquipmentApiConnection.callApi("training/removeTraining?trainingUUID=" + trainingId, "DELETE", null, null);
+
     }
 }

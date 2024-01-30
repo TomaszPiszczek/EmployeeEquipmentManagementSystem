@@ -58,8 +58,7 @@ public class EmployeeItemController implements Initializable, DataItemController
         if (isSelected) {
             column.setStyle("-fx-background-color: lightblue; -fx-border-color: black; -fx-border-width: 0 0 1 0;");
             dashboardController.addToEmployeeUUIDList(employee.getEmployeeId());
-            System.out.println("ADDED" + employee.getEmployeeId());
-            System.out.println(dashboardController.hashCode() + "dd");
+
         } else {
             column.setStyle("-fx-border-color: black; -fx-border-width: 0 0 1 0;");
             dashboardController.removeFromEmployeeUUIDList(employee.getEmployeeId());
