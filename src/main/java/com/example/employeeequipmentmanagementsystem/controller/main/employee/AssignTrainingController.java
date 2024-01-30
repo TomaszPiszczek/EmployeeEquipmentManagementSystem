@@ -18,10 +18,34 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 public class AssignTrainingController implements Initializable {
+
+    private static AssignTrainingController instance;
+    private List<UUID> trainingsUUIDList = new ArrayList<>();
+    private UUID employeeUUID;
+
+
+
+
+
+    private AssignTrainingController() {
+    }
+
+    public static AssignTrainingController getInstance() {
+        if (instance == null) {
+            instance = new AssignTrainingController();
+        }
+        return instance;
+    }
     @FXML
     private DatePicker date;
 
@@ -37,38 +61,69 @@ public class AssignTrainingController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.dashboardController = DashboardController.getInstance();
-
-
-        List<Training> trainings ;
-        trainings = TrainingService.getTrainings();
-        dashboardController.printDataInColumns(trainings,"training_item.fxml", TrainingItemController.class,trainingLayout);
+        updateTrainings();
     }
 
     @FXML
     void assignTraining(MouseEvent event) {
+        LocalDate selectedDate = date.getValue();
+        LocalTime midnight = LocalTime.MIDNIGHT;
+        LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate, midnight);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        String formattedDateTime = selectedDateTime.format(formatter);
 
+
+        for (UUID uuid: trainingsUUIDList
+             ) {
+            System.out.println("Training UUID " + uuid);
+            TrainingService.assignTrainingToEmployee(employeeUUID,uuid,formattedDateTime);
+        }
     }
 
     @FXML
     void createTraining(MouseEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/training/create_training_form.fxml"));
+        Parent root = fxmlLoader.load();
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/create_training_form.fxml"));
-            Parent root = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Utwórz badanie");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
 
-            Stage stage = new Stage();
-            stage.setTitle("Utwórz badanie");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(root));
+        CreateTrainingController createTrainingController = fxmlLoader.getController();
+        createTrainingController.setStage((Stage) root.getScene().getWindow());
 
-            CreateTrainingController createTrainingController = fxmlLoader.getController();
-            createTrainingController.setStage((Stage) root.getScene().getWindow());
+        createTrainingController.setAssignTrainingController(this);
 
-            stage.showAndWait();
-
+        stage.showAndWait();
     }
-
 
     public void setStage(Stage window) {
     this.stage = window;
+    }
+    public void updateTrainings(){
+        clearChildren(trainingLayout);
+        List<Training> trainings ;
+        trainings = TrainingService.getTrainings();
+        dashboardController.printDataInColumns(trainings,"training_item_noDate.fxml", TrainingItemControllerNoDate.class,trainingLayout);
+    }
+
+    private void clearChildren(VBox trainingLayout) {
+        if (trainingLayout.getChildren().size() > 1) {
+            trainingLayout.getChildren().subList(1, trainingLayout.getChildren().size()).clear();
+        }
+    }
+
+
+    public void addToList(UUID trainingId) {
+        trainingsUUIDList.add(trainingId);
+    }
+
+    public void removeFromList(UUID trainingId) {
+        trainingsUUIDList.remove(trainingId);
+    }
+
+    public void setEmployeeUUID(UUID employeeUUID) {
+        this.employeeUUID = employeeUUID;
     }
 }
