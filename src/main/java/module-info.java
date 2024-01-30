@@ -11,7 +11,7 @@ module com.example.employeeequipmentmanagementsystem {
     requires com.google.gson;
     requires javafx.base;
     requires java.logging;
-    requires java.xml;
+
 
 
     exports com.example.employeeequipmentmanagementsystem;

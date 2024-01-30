@@ -1,12 +1,9 @@
 package com.example.employeeequipmentmanagementsystem.controller.main;
 
 import com.example.employeeequipmentmanagementsystem.controller.StageSettings;
-import com.example.employeeequipmentmanagementsystem.controller.item.DataItemController;
-import com.example.employeeequipmentmanagementsystem.controller.item.EmployeeItemController;
-import com.example.employeeequipmentmanagementsystem.controller.item.EquipmentItemController;
-import com.example.employeeequipmentmanagementsystem.controller.item.TrainingItemController;
-import com.example.employeeequipmentmanagementsystem.controller.item.EquipmentItemDetailsController;
+import com.example.employeeequipmentmanagementsystem.controller.item.*;
 import com.example.employeeequipmentmanagementsystem.controller.main.employee.AddEmployeeController;
+import com.example.employeeequipmentmanagementsystem.controller.main.employee.AddToolFormController;
 import com.example.employeeequipmentmanagementsystem.controller.main.employee.AssignTrainingController;
 import com.example.employeeequipmentmanagementsystem.controller.main.tools.AssignEmployeeItemController;
 import com.example.employeeequipmentmanagementsystem.controller.main.tools.CreateToolFormController;
@@ -190,6 +187,8 @@ public class DashboardController implements Initializable {
                 switchToEmployeeDetailStage();
                 initializeTrainingDetails(uuid);
                 initializeEquipmentDetails(uuid);
+                AssignTrainingController.getInstance().setEmployeeUUID(uuid);
+                AddToolFormController.getInstance().setEmployeeUUID(uuid);
             }
         }
     }
@@ -280,8 +279,8 @@ public class DashboardController implements Initializable {
                 }
                 if(list.get(i) instanceof Equipment){
                     fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/equipment_item.fxml"));
-                    //EquipmentItemController equipmentItemController = fxmlLoader.getController();
                 }
+
                 if (controllerClass.isInstance(specificController)) {
                     specificController.setData(list.get(i));
                     setHBoxStyle(i, hbox);
@@ -399,7 +398,7 @@ public class DashboardController implements Initializable {
     @FXML
     void addEmployee(MouseEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/create_employee_form.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/create_employee/create_employee_form.fxml"));
             Parent root = fxmlLoader.load();
 
             Stage stage = new Stage();
@@ -425,15 +424,21 @@ public class DashboardController implements Initializable {
     @FXML
     void AddTraining(MouseEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/assign_training.fxml"));
-            Parent root = fxmlLoader.load();
+            AssignTrainingController assignTrainingController =  AssignTrainingController.getInstance();
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/training/assign_training.fxml"));
+            loader.setController(assignTrainingController);
+
+
+            Parent root = loader.load();
 
             Stage stage = new Stage();
             stage.setTitle("Dodaj badanie");
-            stage.initModality(Modality.APPLICATION_MODAL); // Ustawia okno jako modalne (zamyka poprzednie okno, dopóki nie zostanie zamknięte)
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
 
-            AssignTrainingController assignTrainingController = fxmlLoader.getController();
+
             assignTrainingController.setStage((Stage) root.getScene().getWindow());
 
             stage.showAndWait();
@@ -446,7 +451,27 @@ public class DashboardController implements Initializable {
 
     @FXML
     void AddTool(MouseEvent event) {
+        try {
+            AddToolFormController addToolFormController =  AddToolFormController.getInstance();
 
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/tool/add_tool_to_employee.fxml"));
+            loader.setController(addToolFormController);
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Przypisz narzedzie");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+
+
+            addToolFormController.setStage((Stage) root.getScene().getWindow());
+
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

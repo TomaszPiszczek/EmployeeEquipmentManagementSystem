@@ -45,7 +45,6 @@ public class TrainingItemController implements Initializable, DataItemController
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
     }
 
     @FXML

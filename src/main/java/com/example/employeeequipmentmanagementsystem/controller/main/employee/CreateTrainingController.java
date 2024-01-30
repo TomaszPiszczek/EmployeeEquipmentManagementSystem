@@ -12,10 +12,15 @@ public class CreateTrainingController {
 
     @FXML
     private TextField name;
+    private AssignTrainingController assignTrainingController;
     Stage stage;
     @FXML
     void addTraining(ActionEvent event) {
         TrainingService.createTraining(name.getText(),description.getText());
+        if (assignTrainingController != null) {
+            assignTrainingController.updateTrainings();
+        }
+        closeForm();
     }
     @FXML
     void close(ActionEvent event) {
@@ -30,5 +35,9 @@ public class CreateTrainingController {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public void setAssignTrainingController(AssignTrainingController assignTrainingController) {
+        this.assignTrainingController = assignTrainingController;
     }
 }
