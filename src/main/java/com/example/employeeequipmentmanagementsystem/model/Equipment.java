@@ -12,6 +12,7 @@ public class Equipment {
     private String description;
     private String imageData;
     private String assignDate;
+    private String serviceDate;
 
     public UUID getEquipmentId() {
         return uuid;
@@ -37,6 +38,10 @@ public class Equipment {
         return assignDate;
     }
 
+    public String getServiceDate() {
+        return serviceDate;
+    }
+
     public static class Builder {
         private UUID equipmentId;
         private String name;
@@ -44,6 +49,7 @@ public class Equipment {
         private String description;
         private String imageData;
         private String assignDate;
+        private String serviceDate; // Added serviceDate field
 
         public Builder() {
             this.equipmentId = UUID.randomUUID();
@@ -63,10 +69,12 @@ public class Equipment {
             this.price = price;
             return this;
         }
-        public Builder assignDate(String assignDate){
-            this.assignDate =assignDate;
+
+        public Builder assignDate(String assignDate) {
+            this.assignDate = assignDate;
             return this;
         }
+
         public Builder description(String description) {
             this.description = description;
             return this;
@@ -74,6 +82,11 @@ public class Equipment {
 
         public Builder imageData(String imageData) {
             this.imageData = imageData;
+            return this;
+        }
+
+        public Builder serviceDate(String serviceDate) {
+            this.serviceDate = serviceDate;
             return this;
         }
 
@@ -85,10 +98,8 @@ public class Equipment {
             equipment.description = this.description;
             equipment.imageData = this.imageData;
             equipment.assignDate = this.assignDate;
+            equipment.serviceDate = this.serviceDate;
             return equipment;
         }
     }
-    //todo ZROBIC LISTE KTORA PO KLIKNIECIU DODAJE UUID do listy po ponownym kliknieciu usuwa , zmienia kolor elementu i p-o kliknieciu usun usuwa
-    //
-
 }

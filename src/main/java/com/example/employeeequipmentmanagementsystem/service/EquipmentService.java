@@ -27,7 +27,9 @@ public class EquipmentService {
         return EquipmentApiConnection.callApi("equipment/getEmployeeEquipment?employeeUUID=" + employeeUUID, "GET", null, typeToken.getType());
 
     }
-    //public static void removeEquipmentFromEmployee(UUID employeeUUID,)
+    public static void removeEquipmentFromEmployee(UUID employeeEquipmentUUID){
+        EquipmentApiConnection.callApi("equipment/removeEquipmentFromEmployee?employeeEquipmentUUID="+employeeEquipmentUUID,"DELETE",null,null);
+    }
 
     public static void createEquipment(BigDecimal price,String name,String description){
         EquipmentApiConnection.callApi("equipment/createEquipment?image=null&price="+price+"&name="+name+"&description="+ description,"POST", HttpRequest.BodyPublishers.noBody(),null);
@@ -52,4 +54,8 @@ public class EquipmentService {
     }
 
 
+    public static void changeDate(String formattedDateTime,UUID equipmentUUID) {
+        System.out.println(equipmentUUID);
+         EquipmentApiConnection.callApi("equipment/changeDate?equipmentUUID=" +equipmentUUID +"&dateTime=" +formattedDateTime, "PATCH", null, String.class);
+    }
 }

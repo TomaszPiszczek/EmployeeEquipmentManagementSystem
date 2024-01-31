@@ -1,7 +1,9 @@
 package com.example.employeeequipmentmanagementsystem.controller.item;
 
 import com.example.employeeequipmentmanagementsystem.controller.item.DataItemController;
+import com.example.employeeequipmentmanagementsystem.controller.main.DashboardController;
 import com.example.employeeequipmentmanagementsystem.model.Equipment;
+import com.example.employeeequipmentmanagementsystem.service.EquipmentService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,6 +11,7 @@ import javafx.scene.control.Label;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 public class EquipmentItemDetailsController implements Initializable, DataItemController {
 
@@ -23,9 +26,12 @@ public class EquipmentItemDetailsController implements Initializable, DataItemCo
 
     @FXML
     private Label number;
+    private Equipment equipment;
+    private DashboardController dashboardController;
 
     public void setData(Object data) {
         if (data instanceof Equipment equipment) {
+            this.equipment = equipment;
             description.setText(equipment.getDescription());
             name.setText(equipment.getName());
 
@@ -44,12 +50,13 @@ public class EquipmentItemDetailsController implements Initializable, DataItemCo
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        this.dashboardController = DashboardController.getInstance();
     }
 
     @FXML
     void delete(ActionEvent event) {
-
+        EquipmentService.removeEquipmentFromEmployee(equipment.getEquipmentId());
+        dashboardController.switchToEmployeeDetailStage(dashboardController.getEmployeeUUID());
     }
 }
 
