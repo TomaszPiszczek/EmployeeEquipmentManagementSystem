@@ -50,7 +50,13 @@ public class EquipmentApiConnection {
                     requestBuilder.POST(body);
                 }
                 case "DELETE" -> requestBuilder.DELETE();
-                case "PATCH" -> requestBuilder.method("PATCH", body);
+                case "PATCH" -> {
+                    if(body == null){
+                        body = HttpRequest.BodyPublishers.noBody();
+                    }
+                    requestBuilder.method("PATCH",body);
+                }
+
                 default -> throw new IllegalArgumentException("Wrong method " + method);
             }
 
@@ -59,7 +65,7 @@ public class EquipmentApiConnection {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if(response.body() ==null) return null;
-            if(response.statusCode() == 403) throw new LoginException(response.statusCode() + "Forbidden " + response.body());
+            if(response.statusCode() == 403) throw new RuntimeException(response.statusCode() + "Forbidden " + response.body());
             if(response.statusCode() == 404) throw new RuntimeException(response.statusCode() + response.body());
             if( type == String.class) return (T) response.body();
             if(type== null) return null;
@@ -116,8 +122,7 @@ public class EquipmentApiConnection {
             JsonObject jsonResponse = gson.fromJson(authResponse.body(), JsonObject.class);
             userPreferences.put("token", jsonResponse.get("token").getAsString());
 
-        } catch (LoginException ex) {
-            System.out.println(ex.getMessage());
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
