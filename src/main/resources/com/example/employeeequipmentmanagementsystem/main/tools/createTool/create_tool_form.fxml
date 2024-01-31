@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="361.0" prefWidth="496.0"  xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.main.tools.CreateToolFormController">
+<AnchorPane prefHeight="361.0" prefWidth="496.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeeequipmentmanagementsystem.controller.main.tools.CreateToolFormController">
 
     <children>
         <VBox alignment="CENTER" prefHeight="361.0" prefWidth="496.0" spacing="10.0" stylesheets="@create_tool_css.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -44,6 +45,16 @@
                         <TextField fx:id="price" stylesheets="@create_tool_css.css" />
                     </children>
                 </HBox>
+            <HBox spacing="10.0" stylesheets="@create_tool_css.css">
+               <children>
+                  <Label prefHeight="18.0" prefWidth="114.0" stylesheets="@create_tool_css.css" text="Data przeglądu:">
+                     <font>
+                        <Font name="Tahoma" size="14.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="date" prefHeight="25.0" prefWidth="145.0" promptText="Wybierz date" />
+               </children>
+            </HBox>
                 <HBox spacing="10.0" stylesheets="@create_tool_css.css">
                     <children>
                         <Button onAction="#close" stylesheets="@create_tool_css.css" text="Anuluj" />

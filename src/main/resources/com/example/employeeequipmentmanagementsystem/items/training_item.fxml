@@ -27,14 +27,14 @@
             <Font name="Tahoma Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="date" alignment="CENTER" prefHeight="45.0" prefWidth="167.0">
+      <Label fx:id="date" alignment="CENTER" prefHeight="45.0" prefWidth="199.0">
          <font>
             <Font name="Tahoma Bold" size="18.0" />
          </font>
       </Label>
-      <HBox prefHeight="45.0" prefWidth="160.0">
+      <HBox prefHeight="45.0" prefWidth="130.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#delete" prefHeight="51.0" prefWidth="160.0" style="-fx-background-color: red;" text="Button">
+            <Button mnemonicParsing="false" onAction="#delete" prefHeight="51.0" prefWidth="160.0" style="-fx-background-color: red;" text="USUŃ">
                <font>
                   <Font name="Tahoma Bold" size="18.0" />
                </font>

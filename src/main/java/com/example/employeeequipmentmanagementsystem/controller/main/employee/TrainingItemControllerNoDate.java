@@ -66,7 +66,6 @@ public class TrainingItemControllerNoDate implements Initializable, DataItemCont
         TrainingService.removeTraining(training.getTrainingId());
         if (assignTrainingController != null) {
             assignTrainingController.updateTrainings();
-            System.out.println("non null");
         }
     }
 
