@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -67,17 +68,31 @@ public class AssignTrainingController implements Initializable {
     @FXML
     void assignTraining(MouseEvent event) {
         LocalDate selectedDate = date.getValue();
+
+        if (selectedDate == null) {
+            showAlert("Nie wybrano daty", "Proszę wybrać datę szkolenia.");
+            return;
+        }
+
         LocalTime midnight = LocalTime.MIDNIGHT;
         LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate, midnight);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         String formattedDateTime = selectedDateTime.format(formatter);
 
-
-        for (UUID uuid: trainingsUUIDList
-             ) {
-            System.out.println("Training UUID " + uuid);
-            TrainingService.assignTrainingToEmployee(employeeUUID,uuid,formattedDateTime);
+        for (UUID uuid : trainingsUUIDList) {
+            TrainingService.assignTrainingToEmployee(employeeUUID, uuid, formattedDateTime);
         }
+
+        dashboardController.switchToEmployeeDetailStage(dashboardController.getEmployeeUUID());
+        stage.close();
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @FXML

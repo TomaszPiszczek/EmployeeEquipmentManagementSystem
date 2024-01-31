@@ -20,9 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -30,9 +28,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
@@ -41,22 +39,10 @@ import java.util.prefs.Preferences;
 public class DashboardController implements Initializable {
 
     private static DashboardController instance;
-
-    private DashboardController() {
-    }
-
-    public static DashboardController getInstance() {
-        if (instance == null) {
-            instance = new DashboardController();
-        }
-        return instance;
-    }
-
     @FXML
     private Label name;
     @FXML
     private Label surname;
-
     @FXML
     private VBox employeeLayout;
     @FXML
@@ -98,11 +84,35 @@ public class DashboardController implements Initializable {
     private AnchorPane tools_stage;
     @FXML
     private HBox employeeColumn;
+    private UUID employeeUUID;
+    ///
+    ///assign TOOL
+    ///
+    private Set<UUID> employeeUUIDList = new HashSet<>();
+    private Set<UUID> equipmentUUIDList = new HashSet<>();
 
+
+    private DashboardController() {
+    }
+
+    public static DashboardController getInstance() {
+        if (instance == null) {
+            instance = new DashboardController();
+        }
+        return instance;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeEmployeeData();
+    }
+
+    public UUID getEmployeeUUID() {
+        return employeeUUID;
+    }
+
+    public void setEmployeeUUID(UUID employeeUUID) {
+        this.employeeUUID = employeeUUID;
     }
 
     private void initializeEmployeeData() {
@@ -120,7 +130,8 @@ public class DashboardController implements Initializable {
         List<Equipment> equipmentList = EquipmentService.getEquipment();
         printDataInColumns(equipmentList, "equipment_item.fxml", EquipmentItemController.class, equipmentLayout);
     }
-    private void initializeEquipmentDetails(UUID employeeUUID){
+
+    private void initializeEquipmentDetails(UUID employeeUUID) {
         clearChildren(equipmentLayoutDetails);
         equipmentLayoutDetails.setSpacing(1);
 
@@ -131,6 +142,7 @@ public class DashboardController implements Initializable {
         List<Equipment> equipmentList = EquipmentService.getEquipmentForEmployee(employeeUUID);
         printDataInColumns(equipmentList, "equipment_item_details.fxml", EquipmentItemDetailsController.class, equipmentLayoutDetails);
     }
+
     private void initializeTrainingDetails(UUID employeeUUID) {
         clearChildren(trainingLayoutDetails);
         trainingLayoutDetails.setSpacing(1);
@@ -138,7 +150,6 @@ public class DashboardController implements Initializable {
         List<Training> trainingList = TrainingService.getTrainingForEmployee(employeeUUID);
         printDataInColumns(trainingList, "training_item.fxml", TrainingItemController.class, trainingLayoutDetails);
     }
-
 
     private void clearChildren(VBox layout) {
         if (layout.getChildren().size() > 1) {
@@ -165,35 +176,34 @@ public class DashboardController implements Initializable {
         // TODO: Implement cars stage logic
     }
 
-    private void switchToEmployeeDetailStage() {
+    public void switchToEmployeeDetailStage(UUID uuid) {
         employees_stage.setVisible(false);
         employee_detail_stage.setVisible(true);
+        initializeTrainingDetails(uuid);
+        initializeEquipmentDetails(uuid);
+        AssignTrainingController.getInstance().setEmployeeUUID(uuid);
+        AddToolFormController.getInstance().setEmployeeUUID(uuid);
     }
 
     @FXML
     private void switchForm(ActionEvent event) {
-       switchForms(event,null);
+        switchForms(event, null);
     }
-    public void switchForms(ActionEvent event,UUID uuid){
+
+    public void switchForms(ActionEvent event, UUID uuid) {
         if (event.getSource() == scene_employee) {
             switchToEmployeesStage();
         } else if (event.getSource() == scene_tools) {
             switchToToolsStage();
         } else if (event.getSource() == scene_cars) {
             switchToCarsStage();
-        } else if (event.getSource() instanceof Node) {
-            Node sourceNode = (Node) event.getSource();
+        } else if (event.getSource() instanceof Node sourceNode) {
             if ("employee_more".equals(sourceNode.getId())) {
-                switchToEmployeeDetailStage();
-                initializeTrainingDetails(uuid);
-                initializeEquipmentDetails(uuid);
-                AssignTrainingController.getInstance().setEmployeeUUID(uuid);
-                AddToolFormController.getInstance().setEmployeeUUID(uuid);
+                switchToEmployeeDetailStage(uuid);
+
             }
         }
     }
-
-
 
     @FXML
     private void close() {
@@ -214,22 +224,16 @@ public class DashboardController implements Initializable {
 
         Parent root = FXMLLoader.load(url);
         Stage stage = new Stage();
-        Scene scene  = new Scene( root);
+        Scene scene = new Scene(root);
         StageSettings.setStage(stage, root);
         stage.setScene(scene);
         stage.show();
 
     }
 
-
-
-
     private void setHBoxStyle(int index, HBox hbox) {
         hbox.setStyle("-fx-border-color: black; -fx-border-width: 0 0 1 0;");
     }
-
-
-
 
     private void addChildBasedOnObjectType(Object item, HBox hbox, VBox layout) {
         if (item instanceof Employee) {
@@ -238,8 +242,7 @@ public class DashboardController implements Initializable {
             layout.getChildren().add(hbox);
         } else if (item instanceof Training) {
             layout.getChildren().add(hbox);
-        }
-        else {
+        } else {
             handleInvalidDataType(item);
         }
     }
@@ -254,8 +257,7 @@ public class DashboardController implements Initializable {
         logger.log(Level.SEVERE, "Invalid data type: " + item.getClass().getName());
     }
 
-    public void printDataInColumns(List<? extends Object> list, String fxmlItemFile,
-                                   Class<? extends DataItemController> controllerClass, VBox layout) {
+    public void printDataInColumns(List<? extends Object> list, String fxmlItemFile, Class<? extends DataItemController> controllerClass, VBox layout) {
         for (int i = 0; i < list.size(); i++) {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/" + fxmlItemFile));
@@ -264,20 +266,20 @@ public class DashboardController implements Initializable {
 
                 DataItemController specificController = fxmlLoader.getController();
 
-                if(list.get(i) instanceof Employee){
+                if (list.get(i) instanceof Employee) {
 
-                    if(fxmlItemFile.contains("assign")){
+                    if (fxmlItemFile.contains("assign")) {
                         fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/assign_employee_item.fxml"));
 
                         AssignEmployeeItemController assignEmployeeItemController = fxmlLoader.getController();
-                       // assignEmployeeItemController.setDashboardController(this);
-                    }else {
+                        // assignEmployeeItemController.setDashboardController(this);
+                    } else {
                         fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/employee_item.fxml"));
                         EmployeeItemController employeeItemController = fxmlLoader.getController();
                     }
 
                 }
-                if(list.get(i) instanceof Equipment){
+                if (list.get(i) instanceof Equipment) {
                     fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/equipment_item.fxml"));
                 }
 
@@ -294,38 +296,35 @@ public class DashboardController implements Initializable {
             }
         }
     }
+
     //
     // TOOLS CONTROLLER
     //
     @FXML
     void addTool(MouseEvent event) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/tools/createTool/create_tool_form.fxml"));
-                Parent root = fxmlLoader.load();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/tools/createTool/create_tool_form.fxml"));
+            Parent root = fxmlLoader.load();
 
-                Stage stage = new Stage();
-                stage.setTitle("Dodaj Narzędzie");
-                stage.initModality(Modality.APPLICATION_MODAL); // Ustawia okno jako modalne (zamyka poprzednie okno, dopóki nie zostanie zamknięte)
-                stage.setScene(new Scene(root));
+            Stage stage = new Stage();
+            stage.setTitle("Dodaj Narzędzie");
+            stage.initModality(Modality.APPLICATION_MODAL); // Ustawia okno jako modalne (zamyka poprzednie okno, dopóki nie zostanie zamknięte)
+            stage.setScene(new Scene(root));
 
-                CreateToolFormController createToolFormController = fxmlLoader.getController();
-                createToolFormController.setStage((Stage) root.getScene().getWindow());
+            CreateToolFormController createToolFormController = fxmlLoader.getController();
+            createToolFormController.setStage((Stage) root.getScene().getWindow());
 
-                stage.showAndWait();
+            stage.showAndWait();
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         switchToToolsStage();
 
     }
-    ///
-    ///assign TOOL
-    ///
-    private Set<UUID> employeeUUIDList = new HashSet<>();
 
-    public void assignToolsToEmployees(){
-        EquipmentService.assignEquipmentsToEmployees(employeeUUIDList, equipmentUUIDList,"2024-01-26T14:13:33");
+    public void assignToolsToEmployees() {
+        EquipmentService.assignEquipmentsToEmployees(employeeUUIDList, equipmentUUIDList, "2024-01-26T14:13:33");
 
         employeeUUIDList = new HashSet<>();
         equipmentUUIDList = new HashSet<>();
@@ -339,6 +338,10 @@ public class DashboardController implements Initializable {
     public void removeFromEmployeeUUIDList(UUID employeeUUID) {
         employeeUUIDList.remove(employeeUUID);
     }
+    ///
+    ///REMOVE TOOL
+    ///
+
     @FXML
     void assignTool(MouseEvent event) {
 
@@ -359,23 +362,25 @@ public class DashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-    ///
-    ///REMOVE TOOL
-    ///
 
-    private Set<UUID> equipmentUUIDList = new HashSet<>();
     @FXML
     void removeTool(MouseEvent event) {
-        System.out.println(equipmentUUIDList.size());
-        System.out.println(employeeUUIDList.size());
-        System.out.println("REMOVE" +this.hashCode());
-        for (UUID uuid: equipmentUUIDList
-             ) {
-            EquipmentService.removeEquipment(uuid);
-        }
 
-        equipmentUUIDList = new HashSet<>();
-        switchToToolsStage();
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Potwierdzenie usunięcia narzędzi");
+        confirmationAlert.setHeaderText("Usunięcie tego narzędzia spowoduje usunięcie go z wyposażenia pracowników.");
+        confirmationAlert.setContentText("Czy na pewno chcesz kontynuować?");
+
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            for (UUID uuid : equipmentUUIDList) {
+                EquipmentService.removeEquipment(uuid);
+            }
+
+            equipmentUUIDList = new HashSet<>();
+            switchToToolsStage();
+        }
     }
 
     //
@@ -383,18 +388,19 @@ public class DashboardController implements Initializable {
     //
     @FXML
     void removeEmployee(MouseEvent event) {
-        System.out.println(employeeUUIDList.size());
-        System.out.println(this.hashCode() + "DAS");
-        for (UUID uuid:employeeUUIDList
-             ) {
-           EmployeeService.removeEmployee(uuid);
+        for (UUID uuid : employeeUUIDList) {
+            EmployeeService.removeEmployee(uuid);
+            System.out.println(uuid);
         }
+        employeeUUIDList = new HashSet<>();
         switchToEmployeesStage();
     }
+
     @FXML
     void editEmployee(MouseEvent event) {
 
     }
+
     @FXML
     void addEmployee(MouseEvent event) {
         try {
@@ -403,7 +409,7 @@ public class DashboardController implements Initializable {
 
             Stage stage = new Stage();
             stage.setTitle("Dodaj Pracownika");
-            stage.initModality(Modality.APPLICATION_MODAL); // Ustawia okno jako modalne (zamyka poprzednie okno, dopóki nie zostanie zamknięte)
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
 
             AddEmployeeController addEmployeeController = fxmlLoader.getController();
@@ -424,7 +430,7 @@ public class DashboardController implements Initializable {
     @FXML
     void AddTraining(MouseEvent event) {
         try {
-            AssignTrainingController assignTrainingController =  AssignTrainingController.getInstance();
+            AssignTrainingController assignTrainingController = AssignTrainingController.getInstance();
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/training/assign_training.fxml"));
@@ -452,7 +458,7 @@ public class DashboardController implements Initializable {
     @FXML
     void AddTool(MouseEvent event) {
         try {
-            AddToolFormController addToolFormController =  AddToolFormController.getInstance();
+            AddToolFormController addToolFormController = AddToolFormController.getInstance();
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/employee/tool/add_tool_to_employee.fxml"));
@@ -475,7 +481,6 @@ public class DashboardController implements Initializable {
     }
 
 
-
     public void addToEquipmentUUIDList(UUID equipmentUUID) {
         equipmentUUIDList.add(equipmentUUID);
     }
@@ -483,10 +488,6 @@ public class DashboardController implements Initializable {
     public void removeFromEquipmentUUIDList(UUID equipmentUUID) {
         equipmentUUIDList.remove(equipmentUUID);
     }
-
-
-
-
 
 
 }

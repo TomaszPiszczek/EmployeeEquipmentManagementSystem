@@ -9,6 +9,7 @@ import com.example.employeeequipmentmanagementsystem.service.EquipmentService;
 import com.example.employeeequipmentmanagementsystem.service.TrainingService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -57,14 +58,28 @@ public class AddToolFormController implements Initializable {
     @FXML
     void assignTools(MouseEvent event) {
         LocalDate selectedDate = date.getValue();
+
+        if (selectedDate == null) {
+            showAlert("Nie wybrano daty", "Proszę wybrać datę przypisania narzędzi.");
+            return;
+        }
+
         LocalTime midnight = LocalTime.MIDNIGHT;
         LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate, midnight);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         String formattedDateTime = selectedDateTime.format(formatter);
 
+        EquipmentService.assignEquipmentsToEmployees(Set.of(employeeUUID), toolUUIDList, formattedDateTime);
+        dashboardController.switchToEmployeeDetailStage(dashboardController.getEmployeeUUID());
+        stage.close();
+    }
 
-
-        EquipmentService.assignEquipmentsToEmployees(Set.of(employeeUUID),toolUUIDList,formattedDateTime);
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
     public void setStage(Stage window) {
         this.stage = window;
