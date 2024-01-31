@@ -50,22 +50,25 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Preferences userPref = Preferences.userRoot();
+        EquipmentApiConnection.authenticate(userPref);
         if(EquipmentApiConnection.isTokenValid(userPref.get("token",""))){
-            //changeScene();
             Platform.runLater(this::changeScene);
 
         }
     }
 
     public void loginAction() {
-        EquipmentApiConnection equipmentApiConnection = new EquipmentApiConnection();
+
+
+
         String email = emailField.getText();
         String enteredPassword = password.getText();
 
-        equipmentApiConnection.login(email, enteredPassword);
+        EquipmentApiConnection.login(email, enteredPassword);
+
         Preferences userPreferences = Preferences.userRoot();
 
-        if (!equipmentApiConnection.isTokenValid(userPreferences.get("token", ""))) {
+        if (!EquipmentApiConnection.isTokenValid(userPreferences.get("token", ""))) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Alert");
             alert.setHeaderText(null);
@@ -76,12 +79,14 @@ public class LoginController implements Initializable {
         changeScene();
     }
     private void changeScene(){
-        login.getScene().getWindow().hide();
+        if (login.getScene() != null) {
+            Stage currentStage = (Stage) login.getScene().getWindow();
+            currentStage.close();
+        }
         dashboardController = DashboardController.getInstance();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/main/dashboard.fxml"));
         loader.setController(dashboardController);
-        System.out.println("LOGIN CONTROLLER  " + dashboardController.hashCode());
         Parent root = null;
         try {
             root = loader.load();
