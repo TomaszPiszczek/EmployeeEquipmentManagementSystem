@@ -1,5 +1,6 @@
 package com.example.employeeequipmentmanagementsystem.controller.item;
 
+import com.example.employeeequipmentmanagementsystem.controller.main.DashboardController;
 import com.example.employeeequipmentmanagementsystem.model.Training;
 import com.example.employeeequipmentmanagementsystem.service.TrainingService;
 import javafx.event.ActionEvent;
@@ -27,6 +28,7 @@ public class TrainingItemController implements Initializable, DataItemController
     @FXML
     private HBox column;
     private Training training;
+    private DashboardController dashboardController;
     public void setData(Object data){
         if (data instanceof Training training) {
             this.training = (Training) data;
@@ -44,12 +46,13 @@ public class TrainingItemController implements Initializable, DataItemController
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        this.dashboardController = DashboardController.getInstance();
     }
 
     @FXML
     void delete(ActionEvent event) {
         TrainingService.removeTrainingFromEmployee(training.getTrainingId());
+        dashboardController.switchToEmployeeDetailStage(dashboardController.getEmployeeUUID());
 
     }
 }

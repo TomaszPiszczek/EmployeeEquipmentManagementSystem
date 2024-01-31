@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
@@ -15,6 +16,10 @@ import javafx.util.converter.NumberStringConverter;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.http.HttpRequest;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class CreateToolFormController implements Initializable {
@@ -29,6 +34,9 @@ public class CreateToolFormController implements Initializable {
     private TextField price;
 
     private Stage stage;
+
+    @FXML
+    private DatePicker date;
 
 
     public void setStage(Stage stage) {
@@ -46,7 +54,15 @@ public class CreateToolFormController implements Initializable {
 
     @FXML
     void createTool(ActionEvent event) {
-        if(EquipmentApiConnection.callApi("equipment/createEquipment?image=null&price="+price.getText()+"&name="+name.getText()+"&description="+ description.getText(),"POST", HttpRequest.BodyPublishers.noBody(),String.class)
+
+        LocalDate selectedDate = date.getValue();
+        LocalTime midnight = LocalTime.MIDNIGHT;
+        LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate, midnight);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        String formattedDateTime = selectedDateTime.format(formatter);
+
+
+        if(EquipmentApiConnection.callApi("equipment/createEquipment?image=null&price="+price.getText()+"&name="+name.getText()+"&description="+ description.getText()+"&serviceDate="+formattedDateTime,"POST", HttpRequest.BodyPublishers.noBody(),String.class)
                 .toString().contains("Duplicate")){
             showAlert("Podane narzędzie już istnieje");
         }

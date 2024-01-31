@@ -41,11 +41,8 @@ public class EmployeeItemController implements Initializable, DataItemController
         this.dashboardController = DashboardController.getInstance();
 
 
-
-        // Now you can safely use the dashboardController
             column.setOnMouseClicked(event -> handleItemClick());
 
-            // Handle the case where the dashboardController is not set yet
 
     }
 
@@ -84,7 +81,7 @@ public class EmployeeItemController implements Initializable, DataItemController
 
         if (dashboardController != null) {
             dashboardController.switchForms(event,getEmployeeUUID());
-            System.out.println(getEmployeeUUID());
+            dashboardController.setEmployeeUUID(getEmployeeUUID());
         }
 
     }
