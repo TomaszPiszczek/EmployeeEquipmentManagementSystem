@@ -28,7 +28,7 @@ public class EquipmentApiConnection {
 
     public static  <T> T callApi(String path, String method, HttpRequest.BodyPublisher body, Type type) {
         try {
-            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/v1/" + path)).header("Content-Type", "application/json");
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(new URI("https://equipmentapi2.azurewebsites.net/api/v1/" + path)).header("Content-Type", "application/json");
             Preferences userPref = Preferences.userRoot();
 
 
@@ -107,7 +107,7 @@ public class EquipmentApiConnection {
             HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + userPreferences.get("email", "") + "\",\"password\":\"" + userPreferences.get("password", "") + "\"}");
             String path = "auth/authentication";
 
-            HttpRequest.Builder authRequestBuilder = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/v1/" + path))
+            HttpRequest.Builder authRequestBuilder = HttpRequest.newBuilder().uri(new URI("https://equipmentapi2.azurewebsites.net/api/v1/" + path))
                     .header("Content-Type", "application/json").POST(bodyPublisher);
 
             HttpRequest authRequest = authRequestBuilder.build();

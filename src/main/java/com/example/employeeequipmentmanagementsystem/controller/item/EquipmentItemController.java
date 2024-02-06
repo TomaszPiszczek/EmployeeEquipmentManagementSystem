@@ -63,7 +63,9 @@ public class EquipmentItemController implements Initializable, DataItemControlle
                 Image img = new Image(inputStream);
                 image.setImage(img);
             }
-            date.setText(formatAssignDate(equipment.getServiceDate().toString()));
+             if(equipment.getServiceDate() !=null){
+                 date.setText(formatAssignDate(equipment.getServiceDate().toString()));
+             }
             name.setText(equipment.getName());
             if (equipment.getPrice() != null) {
                 price.setText(equipment.getPrice().toString());

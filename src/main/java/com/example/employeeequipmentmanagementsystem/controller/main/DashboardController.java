@@ -1,5 +1,6 @@
 package com.example.employeeequipmentmanagementsystem.controller.main;
 
+import com.example.employeeequipmentmanagementsystem.apiConnection.EquipmentApiConnection;
 import com.example.employeeequipmentmanagementsystem.controller.StageSettings;
 import com.example.employeeequipmentmanagementsystem.controller.item.*;
 import com.example.employeeequipmentmanagementsystem.controller.main.employee.AddEmployeeController;
@@ -39,6 +40,8 @@ import java.util.prefs.Preferences;
 public class DashboardController implements Initializable {
 
     private static DashboardController instance;
+    @FXML
+    private Label userName;
     @FXML
     private Label name;
     @FXML
@@ -105,6 +108,8 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeEmployeeData();
+        Preferences userPref = Preferences.userRoot();
+        this.userName.setText(userPref.get("email",""));
     }
 
     public UUID getEmployeeUUID() {
@@ -120,6 +125,10 @@ public class DashboardController implements Initializable {
         employeeLayout.setSpacing(1);
 
         List<Employee> employeeList = EmployeeService.getEmployeesDTO();
+        for (Employee emp: employeeList
+             ) {
+            System.out.println(emp.getName() + "EMP");
+        }
         printDataInColumns(employeeList, "employee_item.fxml", EmployeeItemController.class, employeeLayout);
     }
 
@@ -128,6 +137,10 @@ public class DashboardController implements Initializable {
         equipmentLayout.setSpacing(1);
 
         List<Equipment> equipmentList = EquipmentService.getEquipment();
+        for (Equipment eq: equipmentList
+        ) {
+            System.out.println(eq.getName() + "EQ");
+        }
         printDataInColumns(equipmentList, "equipment_item.fxml", EquipmentItemController.class, equipmentLayout);
     }
 
