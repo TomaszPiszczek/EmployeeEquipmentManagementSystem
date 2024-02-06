@@ -53,3 +53,7 @@
 ### API Integration
 
 - The application integrates with the https://github.com/TomaszPiszczek/EquipmentApi REST API.
+
+#### TODO
+-android app
+-cars stage
