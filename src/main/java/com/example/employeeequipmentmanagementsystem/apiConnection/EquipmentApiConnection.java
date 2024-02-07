@@ -1,12 +1,11 @@
 package com.example.employeeequipmentmanagementsystem.apiConnection;
 
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.employeeequipmentmanagementsystem.exception.LoginException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
 
 import java.lang.reflect.Type;
 import java.net.URI;
@@ -89,18 +88,13 @@ public class EquipmentApiConnection {
         if(jsonResponse == null) return;
 
         Preferences userPreferences = Preferences.userRoot();
-        userPreferences.put("password", password);
-        userPreferences.put("email", email);
+       
         userPreferences.put("token", jsonResponse.get("token").getAsString());
     }
 
     public static boolean isTokenValid(String jwtToken) {
-        try {
-            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey("46cf5776e9795db0e5606570207c667d282704912fd91352020c553b766a4d8c").build().parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
-        }
+            DecodedJWT jwt = JWT.decode(jwtToken);
+            return !jwt.getExpiresAt().before(new Date());
     }
     public static void authenticate(Preferences userPreferences) {
         try {

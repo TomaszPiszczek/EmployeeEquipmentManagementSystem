@@ -10,8 +10,8 @@ module com.example.employeeequipmentmanagementsystem {
     requires java.prefs;
     requires com.google.gson;
     requires javafx.base;
+    requires com.auth0.jwt;
     requires java.logging;
-
 
 
     exports com.example.employeeequipmentmanagementsystem;
