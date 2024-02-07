@@ -1,5 +1,5 @@
 <h1 align="center">Employee management system</h1>
-<h6 align="center">This app streamlines organizational tasks by facilitating employee, equipment, and training record management. Users can  add, edit, or remove employees, allocate or withdraw tools and training, and maintain  equipment details. </h6>
+<h6 align="center">App streamlines organizational tasks by facilitating employee, equipment, and training record management. Users can  add, edit, or remove employees, allocate or withdraw tools and training, and maintain  equipment details. </h6>
 <h1></h1>
 
 
