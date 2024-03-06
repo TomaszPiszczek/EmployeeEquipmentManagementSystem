@@ -1,6 +1,5 @@
 package com.example.employeeequipmentmanagementsystem.controller.main;
 
-import com.example.employeeequipmentmanagementsystem.apiConnection.EquipmentApiConnection;
 import com.example.employeeequipmentmanagementsystem.controller.StageSettings;
 import com.example.employeeequipmentmanagementsystem.controller.item.*;
 import com.example.employeeequipmentmanagementsystem.controller.main.employee.AddEmployeeController;
@@ -14,6 +13,8 @@ import com.example.employeeequipmentmanagementsystem.model.Training;
 import com.example.employeeequipmentmanagementsystem.service.EmployeeService;
 import com.example.employeeequipmentmanagementsystem.service.EquipmentService;
 import com.example.employeeequipmentmanagementsystem.service.TrainingService;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +39,7 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public class DashboardController implements Initializable {
+    
 
     private static DashboardController instance;
     @FXML
@@ -54,29 +56,17 @@ public class DashboardController implements Initializable {
     private VBox trainingLayoutDetails;
     @FXML
     private VBox equipmentLayoutDetails;
-    private AnchorPane main_form;
     @FXML
-    private Button close;
+    private AnchorPane main_form;
+
     @FXML
     private AnchorPane employee_detail_stage;
     @FXML
     private AnchorPane employees_stage;
-    @FXML
-    private VBox equipmentLayout1;
-    @FXML
-    private VBox equipmentLayout11;
+
     @FXML
     private Button logout;
-    @FXML
-    private AnchorPane main_add_employee;
-    @FXML
-    private AnchorPane main_delete_employee;
-    @FXML
-    private AnchorPane main_edit_employee;
-    @FXML
-    private TextField main_search;
-    @FXML
-    private Button minimise;
+
     @FXML
     private Button scene_cars;
     @FXML
@@ -85,8 +75,7 @@ public class DashboardController implements Initializable {
     private Button scene_tools;
     @FXML
     private AnchorPane tools_stage;
-    @FXML
-    private HBox employeeColumn;
+
     private UUID employeeUUID;
     ///
     ///assign TOOL
@@ -123,25 +112,56 @@ public class DashboardController implements Initializable {
     private void initializeEmployeeData() {
         clearChildren(employeeLayout);
         employeeLayout.setSpacing(1);
+        Task<List<Employee>> task = new Task<>() {
+            @Override
+            protected List<Employee> call()  {
+                return EmployeeService.getEmployeesDTO();
+            }
+            @Override
+            protected void succeeded() {
+                List<Employee> employeeList = getValue();
+                Platform.runLater(() -> printDataInColumns(employeeList, "employee_item.fxml", EmployeeItemController.class, employeeLayout));
+            }
 
-        List<Employee> employeeList = EmployeeService.getEmployeesDTO();
-        for (Employee emp: employeeList
-             ) {
-            System.out.println(emp.getName() + "EMP");
-        }
-        printDataInColumns(employeeList, "employee_item.fxml", EmployeeItemController.class, employeeLayout);
+            @Override
+            protected void failed() {
+                getException().printStackTrace();
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
-    private void initializeEquipmentData() {
-        clearChildren(equipmentLayout);
-        equipmentLayout.setSpacing(1);
 
-        List<Equipment> equipmentList = EquipmentService.getEquipment();
-        for (Equipment eq: equipmentList
-        ) {
-            System.out.println(eq.getName() + "EQ");
-        }
-        printDataInColumns(equipmentList, "equipment_item.fxml", EquipmentItemController.class, equipmentLayout);
+
+
+
+    private void initializeEquipmentData() {
+        System.out.println("init");
+        Task<List<Equipment>> task = new Task<>() {
+            @Override
+            protected List<Equipment> call()  {
+                return EquipmentService.getEquipment();
+
+            }
+            @Override
+            protected void succeeded() {
+                clearChildren(equipmentLayout);
+                equipmentLayout.setSpacing(1);
+                List<Equipment> equipmentList = getValue();
+                Platform.runLater(() -> printDataInColumns(equipmentList, "equipment_item.fxml", EquipmentItemController.class, equipmentLayout));
+            }
+
+            @Override
+            protected void failed() {
+                getException().printStackTrace();
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
     }
 
     private void initializeEquipmentDetails(UUID employeeUUID) {
@@ -171,10 +191,10 @@ public class DashboardController implements Initializable {
     }
 
     private void switchToEmployeesStage() {
+        initializeEmployeeData();
         tools_stage.setVisible(false);
         employee_detail_stage.setVisible(false);
         employees_stage.setVisible(true);
-        initializeEmployeeData();
     }
 
     private void switchToToolsStage() {
@@ -235,6 +255,7 @@ public class DashboardController implements Initializable {
         Preferences.userRoot().clear();
         URL url = getClass().getResource("/com/example/employeeequipmentmanagementsystem/login/login.fxml");
 
+        assert url != null;
         Parent root = FXMLLoader.load(url);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
@@ -244,7 +265,7 @@ public class DashboardController implements Initializable {
 
     }
 
-    private void setHBoxStyle(int index, HBox hbox) {
+    private void setHBoxStyle(HBox hbox) {
         hbox.setStyle("-fx-border-color: black; -fx-border-width: 0 0 1 0;");
     }
 
@@ -270,8 +291,8 @@ public class DashboardController implements Initializable {
         logger.log(Level.SEVERE, "Invalid data type: " + item.getClass().getName());
     }
 
-    public void printDataInColumns(List<? extends Object> list, String fxmlItemFile, Class<? extends DataItemController> controllerClass, VBox layout) {
-        for (int i = 0; i < list.size(); i++) {
+    public void printDataInColumns(List<?> list, String fxmlItemFile, Class<? extends DataItemController> controllerClass, VBox layout) {
+        for (Object o : list) {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/" + fxmlItemFile));
             try {
@@ -279,27 +300,25 @@ public class DashboardController implements Initializable {
 
                 DataItemController specificController = fxmlLoader.getController();
 
-                if (list.get(i) instanceof Employee) {
+                if (o instanceof Employee) {
 
                     if (fxmlItemFile.contains("assign")) {
                         fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/assign_employee_item.fxml"));
 
                         AssignEmployeeItemController assignEmployeeItemController = fxmlLoader.getController();
-                        // assignEmployeeItemController.setDashboardController(this);
                     } else {
                         fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/employee_item.fxml"));
-                        EmployeeItemController employeeItemController = fxmlLoader.getController();
                     }
 
                 }
-                if (list.get(i) instanceof Equipment) {
+                if (o instanceof Equipment) {
                     fxmlLoader.setLocation(getClass().getResource("/com/example/employeeequipmentmanagementsystem/items/equipment_item.fxml"));
                 }
 
                 if (controllerClass.isInstance(specificController)) {
-                    specificController.setData(list.get(i));
-                    setHBoxStyle(i, hbox);
-                    addChildBasedOnObjectType(list.get(i), hbox, layout);
+                    specificController.setData(o);
+                    setHBoxStyle(hbox);
+                    addChildBasedOnObjectType(o, hbox, layout);
                 } else {
                     handleInvalidControllerType(specificController);
                 }
@@ -403,7 +422,6 @@ public class DashboardController implements Initializable {
     void removeEmployee(MouseEvent event) {
         for (UUID uuid : employeeUUIDList) {
             EmployeeService.removeEmployee(uuid);
-            System.out.println(uuid);
         }
         employeeUUIDList = new HashSet<>();
         switchToEmployeesStage();
