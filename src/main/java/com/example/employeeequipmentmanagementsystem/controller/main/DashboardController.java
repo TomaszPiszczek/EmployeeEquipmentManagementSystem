@@ -110,8 +110,7 @@ public class DashboardController implements Initializable {
     }
 
     private void initializeEmployeeData() {
-        clearChildren(employeeLayout);
-        employeeLayout.setSpacing(1);
+
         Task<List<Employee>> task = new Task<>() {
             @Override
             protected List<Employee> call()  {
@@ -119,6 +118,8 @@ public class DashboardController implements Initializable {
             }
             @Override
             protected void succeeded() {
+                clearChildren(employeeLayout);
+                employeeLayout.setSpacing(1);
                 List<Employee> employeeList = getValue();
                 Platform.runLater(() -> printDataInColumns(employeeList, "employee_item.fxml", EmployeeItemController.class, employeeLayout));
             }
@@ -138,7 +139,6 @@ public class DashboardController implements Initializable {
 
 
     private void initializeEquipmentData() {
-        System.out.println("init");
         Task<List<Equipment>> task = new Task<>() {
             @Override
             protected List<Equipment> call()  {
