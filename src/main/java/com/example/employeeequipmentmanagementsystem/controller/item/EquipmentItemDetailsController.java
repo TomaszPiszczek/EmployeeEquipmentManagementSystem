@@ -7,9 +7,12 @@ import com.example.employeeequipmentmanagementsystem.service.EquipmentService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -55,8 +58,18 @@ public class EquipmentItemDetailsController implements Initializable, DataItemCo
 
     @FXML
     void delete(ActionEvent event) {
-        EquipmentService.removeEquipmentFromEmployee(equipment.getEquipmentId());
-        dashboardController.switchToEmployeeDetailStage(dashboardController.getEmployeeUUID());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potwierdzenie usunięcia");
+        alert.setHeaderText("Czy na pewno chcesz usunąć ten sprzęt?");
+        alert.setContentText("Tej operacji nie można cofnąć.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            EquipmentService.removeEquipmentFromEmployee(equipment.getEquipmentId());
+            dashboardController.switchToEmployeeDetailStage(dashboardController.getEmployeeUUID());
+        } else {
+            alert.close();
+        }
     }
 }
 

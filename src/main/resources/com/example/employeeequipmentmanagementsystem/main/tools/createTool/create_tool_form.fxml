@@ -57,7 +57,6 @@
             </HBox>
                 <HBox spacing="10.0" stylesheets="@create_tool_css.css">
                     <children>
-                        <Button onAction="#close" stylesheets="@create_tool_css.css" text="Anuluj" />
                         <Button onAction="#createTool" stylesheets="@create_tool_css.css" text="Dodaj" />
                     </children>
                 </HBox>

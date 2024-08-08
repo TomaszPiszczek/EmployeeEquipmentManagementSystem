@@ -2,15 +2,19 @@ package com.example.employeeequipmentmanagementsystem.controller.item;
 
 import com.example.employeeequipmentmanagementsystem.controller.main.DashboardController;
 import com.example.employeeequipmentmanagementsystem.model.Training;
+import com.example.employeeequipmentmanagementsystem.service.EquipmentService;
 import com.example.employeeequipmentmanagementsystem.service.TrainingService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class TrainingItemController implements Initializable, DataItemController {
@@ -49,10 +53,21 @@ public class TrainingItemController implements Initializable, DataItemController
         this.dashboardController = DashboardController.getInstance();
     }
 
+
+
     @FXML
     void delete(ActionEvent event) {
-        TrainingService.removeTrainingFromEmployee(training.getTrainingId());
-        dashboardController.switchToEmployeeDetailStage(dashboardController.getEmployeeUUID());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potwierdzenie usunięcia");
+        alert.setHeaderText("Czy na pewno chcesz usunąć to badanie");
+        alert.setContentText("Tej operacji nie można cofnąć.");
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            TrainingService.removeTrainingFromEmployee(training.getTrainingId());
+            dashboardController.switchToEmployeeDetailStage(dashboardController.getEmployeeUUID());
+        } else {
+            alert.close();
+        }
     }
 }

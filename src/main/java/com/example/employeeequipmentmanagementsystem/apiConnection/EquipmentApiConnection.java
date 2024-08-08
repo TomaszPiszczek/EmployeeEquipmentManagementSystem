@@ -27,7 +27,7 @@ public class EquipmentApiConnection {
 
     public static  <T> T callApi(String path, String method, HttpRequest.BodyPublisher body, Type type) {
         try {
-            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(new URI("https://equipmentapi2.azurewebsites.net/api/v1/" + path)).header("Content-Type", "application/json");
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/v1/" + path)).header("Content-Type", "application/json");
             Preferences userPref = Preferences.userRoot();
 
 
@@ -81,16 +81,40 @@ public class EquipmentApiConnection {
     }
 
     public static void login(String email, String password) {
-        HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}");
-        String path = "auth/authentication";
+        try {
+            String requestBody = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
+            HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString(requestBody);
 
-        JsonObject jsonResponse = callApi(path, "POST", bodyPublisher,JsonObject.class);
-        if(jsonResponse == null) return;
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("http://localhost:8080/api/v1/auth/authentication"))
+                    .header("Content-Type", "application/json")
+                    .POST(bodyPublisher)
+                    .build();
 
-        Preferences userPreferences = Preferences.userRoot();
-       
-        userPreferences.put("token", jsonResponse.get("token").getAsString());
+            HttpClient client = HttpClient.newHttpClient();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("Failed to authenticate: " + response.statusCode() + " " + response.body());
+            }
+
+            Gson gson = new Gson();
+            JsonObject jsonResponse = gson.fromJson(response.body(), JsonObject.class);
+
+            if (jsonResponse != null && jsonResponse.has("token")) {
+                Preferences userPreferences = Preferences.userRoot();
+                userPreferences.put("token", jsonResponse.get("token").getAsString());
+                userPreferences.put("password",password);
+                userPreferences.put("email",email);
+            } else {
+                throw new RuntimeException("Token not found in the response");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
 
     public static boolean isTokenValid(String jwtToken) {
             DecodedJWT jwt = JWT.decode(jwtToken);
@@ -101,7 +125,9 @@ public class EquipmentApiConnection {
             HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + userPreferences.get("email", "") + "\",\"password\":\"" + userPreferences.get("password", "") + "\"}");
             String path = "auth/authentication";
 
-            HttpRequest.Builder authRequestBuilder = HttpRequest.newBuilder().uri(new URI("https://equipmentapi2.azurewebsites.net/api/v1/" + path))
+            System.out.println( userPreferences.get("email", "")  + " PASS " + userPreferences.get("password",""));
+
+            HttpRequest.Builder authRequestBuilder = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/v1/" + path))
                     .header("Content-Type", "application/json").POST(bodyPublisher);
 
             HttpRequest authRequest = authRequestBuilder.build();

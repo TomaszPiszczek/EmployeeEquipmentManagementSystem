@@ -51,10 +51,13 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Preferences userPref = Preferences.userRoot();
         EquipmentApiConnection.authenticate(userPref);
-        if(EquipmentApiConnection.isTokenValid(userPref.get("token",""))){
-            Platform.runLater(this::changeScene);
 
+        if(!userPref.get("token","").equals("")){
+            if(EquipmentApiConnection.isTokenValid(userPref.get("token",""))){
+                Platform.runLater(this::changeScene);
+            }
         }
+
     }
 
     public void loginAction() {

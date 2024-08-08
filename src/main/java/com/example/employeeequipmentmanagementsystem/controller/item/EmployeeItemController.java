@@ -71,7 +71,11 @@ public class EmployeeItemController implements Initializable, DataItemController
             employee = (Employee) data;
             updateItemStyle();
             numberOfTools.setText(employee.getNumberOfTools().toString());
-            daysToTraining.setText(employee.getDaysToTraining().toString());
+            if(employee.getDaysToTraining().toString().equals("-99999")){
+                daysToTraining.setText("brak");
+            }else {
+                daysToTraining.setText(employee.getDaysToTraining().toString());
+            }
             name.setText(employee.getName());
             surname.setText(employee.getSurname());
         }

@@ -32,6 +32,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -150,6 +152,33 @@ public class DashboardController implements Initializable {
                 clearChildren(equipmentLayout);
                 equipmentLayout.setSpacing(1);
                 List<Equipment> equipmentList = getValue();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Adjust format as needed
+
+
+                equipmentList.sort((o1, o2) -> {
+                    try {
+                        // Handle null values in the serviceDate fields
+                        String dateStr1 = o1.getServiceDate();
+                        String dateStr2 = o2.getServiceDate();
+
+                        if (dateStr1 == null && dateStr2 == null) {
+                            return 0; // Both are null, considered equal
+                        }
+                        if (dateStr1 == null) {
+                            return 1; // Null values are considered greater and will come last
+                        }
+                        if (dateStr2 == null) {
+                            return -1; // Null values are considered greater and will come last
+                        }
+
+                        Date date1 = dateFormat.parse(dateStr1);
+                        Date date2 = dateFormat.parse(dateStr2);
+                        return date1.compareTo(date2);
+
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
                 Platform.runLater(() -> printDataInColumns(equipmentList, "equipment_item.fxml", EquipmentItemController.class, equipmentLayout));
             }
 
