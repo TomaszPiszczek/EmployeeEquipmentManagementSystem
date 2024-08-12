@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -385,11 +386,13 @@ public class DashboardController implements Initializable {
     }
 
     public void assignToolsToEmployees() {
-        EquipmentService.assignEquipmentsToEmployees(employeeUUIDList, equipmentUUIDList, "2024-01-26T14:13:33");
+        String currentTime = LocalDateTime.now().toString();
+
+        EquipmentService.assignEquipmentsToEmployees(employeeUUIDList, equipmentUUIDList, currentTime);
+
 
         employeeUUIDList = new HashSet<>();
         equipmentUUIDList = new HashSet<>();
-
     }
 
     public void addToEmployeeUUIDList(UUID employeeUUID) {

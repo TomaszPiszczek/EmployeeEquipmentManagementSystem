@@ -6,9 +6,13 @@ import com.example.employeeequipmentmanagementsystem.model.Employee;
 import com.example.employeeequipmentmanagementsystem.service.EmployeeService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -55,6 +59,15 @@ public class AssignToolController implements Initializable {
     void assignTools(MouseEvent event) {
         dashboardController.assignToolsToEmployees();
 
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Narzędzia zostały przypisane.", ButtonType.OK);
+        alert.setHeaderText(null);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.OK) {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+        }
     }
+
 
 }

@@ -125,7 +125,6 @@ public class EquipmentApiConnection {
             HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString("{\"email\":\"" + userPreferences.get("email", "") + "\",\"password\":\"" + userPreferences.get("password", "") + "\"}");
             String path = "auth/authentication";
 
-            System.out.println( userPreferences.get("email", "")  + " PASS " + userPreferences.get("password",""));
 
             HttpRequest.Builder authRequestBuilder = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/v1/" + path))
                     .header("Content-Type", "application/json").POST(bodyPublisher);

@@ -51,11 +51,9 @@
                         <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="62.0" layoutY="120.0" size="8em" />
                         <Button fx:id="scene_employee" layoutX="1.0" layoutY="192.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="Pracownicy" />
                         <Button fx:id="scene_tools" layoutX="1.0" layoutY="234.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="Narzędzia" textAlignment="RIGHT" />
-                        <Button fx:id="scene_cars" layoutX="1.0" layoutY="276.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="  Rejestr Pojazdów" />
                         <Button fx:id="logout" layoutY="522.0" mnemonicParsing="false" onAction="#logout" prefHeight="42.0" prefWidth="199.0" styleClass="nav-button" stylesheets="@dashboard.css" text="Wyloguj" />
                         <FontAwesomeIcon glyphName="SIGN_OUT" layoutX="7.0" layoutY="555.0" size="2.8em" text="" wrappingWidth="33.19999885559082" />
                         <FontAwesomeIcon glyphName="USERS" layoutX="14.0" layoutY="219.0" size="1.6em" />
-                        <FontAwesomeIcon glyphName="CAR" layoutX="12.0" layoutY="304.0" size="1.7em" />
                         <FontAwesomeIcon glyphName="COGS" layoutX="13.0" layoutY="261.0" size="1.6em" />
                         <Label fx:id="userName" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="135.0" prefHeight="57.0" prefWidth="186.0" stylesheets="@dashboard.css" text="UserName" textAlignment="CENTER" textFill="WHITE">
                            <font>

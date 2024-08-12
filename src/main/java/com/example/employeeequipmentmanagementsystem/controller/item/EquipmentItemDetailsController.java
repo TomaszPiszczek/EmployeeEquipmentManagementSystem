@@ -60,7 +60,7 @@ public class EquipmentItemDetailsController implements Initializable, DataItemCo
     void delete(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Potwierdzenie usunięcia");
-        alert.setHeaderText("Czy na pewno chcesz usunąć ten sprzęt?");
+        alert.setHeaderText("Czy na pewno chcesz usunąć ?");
         alert.setContentText("Tej operacji nie można cofnąć.");
 
         Optional<ButtonType> result = alert.showAndWait();
