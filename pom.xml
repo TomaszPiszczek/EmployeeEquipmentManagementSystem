@@ -38,6 +38,13 @@
             <artifactId>java-jwt</artifactId>
             <version>4.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>equipment-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/EquipmentApi-0.0.1-SNAPSHOT.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
